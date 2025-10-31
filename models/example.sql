@@ -1,0 +1,1 @@
+select * from `bigquery-public-data.samples.natality` limit 10
