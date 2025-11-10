@@ -1,1 +1,4 @@
-select * from `bigquery-public-data.samples.natality` limit 10
+-- models/example.sql
+SELECT *
+FROM `bigquery-public-data.samples.natality`
+LIMIT 30
