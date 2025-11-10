@@ -2,9 +2,9 @@
 
 with 
 
-source as (
+seller as (
     select *
-    from {{ source ('raw', 'olist_sellers_dataset.csv') }}
-),
+    from {{ source ('raw', 'olist_sellers_dataset') }}
+)
 
-select * from source
+select * from seller

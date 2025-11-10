@@ -2,9 +2,9 @@
 
 with 
 
-source as (
+sources as (
     select *
-    from {{ source ('raw', 'olist_product_category_name_translation') }}
-),
+    from {{ source ('raw', 'product_category_name_translation') }}
+)
 
-select * from source
+select * from sources
