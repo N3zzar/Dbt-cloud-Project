@@ -4,7 +4,7 @@ with
 
 source as (
     select *
-    from {{ ref ('olist_order_reviews_dataset.csv') }}
-),
+    from {{ ref ('olist_order_reviews_dataset') }}
+)
 
 select * from source

@@ -7,4 +7,9 @@ sources as (
     from {{ source ('raw', 'olist_marketing_qualified_leads_dataset') }}
 ),
 
-select * from sources
+filtered as (
+    select
+        {{ dbt_utils.star(from = source ('raw', 'olist_marketing_qualified_leads_dataset'), except=["landing_page_id"]) }}
+    from sources
+)
+select * from filtered

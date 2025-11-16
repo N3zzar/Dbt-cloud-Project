@@ -1,10 +1,22 @@
--- stg_customer.sql
+-- models/staging/stg_customer.sql
 
-with 
-
-source as (
+with raw_source as (
     select *
-    from {{ source ('raw', 'olist_customer_dataset') }}
+    from {{ source('raw', 'olist_customers_dataset') }}
 ),
 
-select * from source
+filtered as (
+    select
+        {{ dbt_utils.star(from=source('raw', 'olist_customers_dataset'), except=["customer_unique_id", "customer_city", "customer_state"]) }}
+    from raw_source
+),
+
+renamed as (
+    select
+        customer_id,
+        customer_zip_code_prefix
+    from filtered
+)
+
+select *
+from renamed

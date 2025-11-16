@@ -7,4 +7,13 @@ source as (
     from {{ source ('raw', 'olist_closed_deals_dataset') }}
 ),
 
-select * from source
+filtered as (
+    select 
+        mql_id,
+        seller_id,
+        won_date,
+        business_segment
+    from source
+)
+
+select * from filtered

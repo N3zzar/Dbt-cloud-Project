@@ -4,7 +4,13 @@ with
 
 source as (
     select *
-    from {{ source ('raw', 'olist_product_dataset') }}
+    from {{ source ('raw', 'olist_products_dataset') }}
 ),
 
-select * from source
+final as (
+    select product_id,
+           product_category_name
+    from source
+)
+
+select * from final

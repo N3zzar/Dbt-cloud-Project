@@ -7,4 +7,11 @@ source as (
     from {{ source ('raw', 'olist_order_payments_dataset') }}
 ),
 
-select * from source
+
+filtered as (
+    select {{ dbt_utils.star(from=source('raw', 'olist_order_payments_dataset'), except=["payment_sequential"]) }}
+    from source
+)
+
+select *
+from filtered
