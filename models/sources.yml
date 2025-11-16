@@ -7,7 +7,7 @@ sources:
     schema: dbt_nezzar
     tables:
       - name: olist_closed_deals_dataset
-      - name: olist_customer_dataset
+      - name: olist_customers_dataset
         description: "Customer details"
       - name: olist_marketing_qualified_leads_dataset
       - name: olist_order_items_dataset
