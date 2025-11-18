@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: stg_customer
+    description: "This holds information about customers"
+    columns:
+      - name: customer_id
+        description: ""
+        tests:
+          - not_null
+          - unique
+      - name: customer_zip_code
+
+      - name: stg_geolocation
+
+      - name: stg_closed__deals
+      - name: stg_marketing__qualified_leads
+      - name: stg_order__items
+      - name: stg_order__payments
+      - name: stg_order__reviews
+      - name: stg_orders
+      - name: stg_product__category__name
+      - name: stg_product
+      - name: stg_sellers

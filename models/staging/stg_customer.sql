@@ -14,7 +14,7 @@ filtered as (
 renamed as (
     select
         customer_id,
-        customer_zip_code_prefix
+        customer_zip_code_prefix as customer_zip_code
     from filtered
 )
 
