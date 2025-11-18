@@ -1,0 +1,38 @@
+version: 2
+models:
+  - name: stg_customer
+    description: "This dataset has information about the customer and its location"
+    columns:
+      - name: customer_id
+        description: ""
+        tests:
+          - not_null
+          - unique
+  - name: customer_zip_code
+
+  - name: stg_geolocation
+    description: "This dataset has information Brazilian zip codes and its lat/lng coordinates."
+
+  - name: stg_closed__deals
+    description: "This contains the extra information gotten after a qualified lead fills in a form at the landing page"
+
+  - name: stg_marketing__qualified_leads
+    description: "These are the qualified marketing qualified leads"
+
+  - name: stg_order__items
+    description: "This dataset includes data about the items purchased within each order"
+
+  - name: stg_order__payments
+    description: "This dataset includes data about the orders payment options."
+
+  - name: stg_orders
+    description: "This is the core dataset containing all the transactions"
+
+  - name: stg_product__category__name
+    description: "This contains the product category names in english"
+
+  - name: stg_product
+    description: "This dataset includes data about the products sold by Olist"
+
+  - name: stg_sellers
+    description: "This dataset includes data about the sellers that fulfilled orders made at Olist"
