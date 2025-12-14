@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: fact_orders
+    description: "Fact table containing order-level metrics, dates, amounts, and delivery performance."
+    columns:
+      - name: order_id
+        description: "Primary key for the order fact table."
+        tests:
+          - not_null
+      - name: customer_id
+        description: "Foreign key referencing dim_customer."
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_id
+      - name: order_status
+        description: "Status of the order."
+      - name: order_purchase_timestamp
+        description: "Date on which the order was placed."
+      - name: order_approved_at
+        description: "Date when the order payment was approved."
+      - name: order_delivered_to_carrier_date
+        description: "Date the order was handed to the carrier."
+      - name: order_delivered_customer_date
+        description: "Date the customer received the package."
+      - name: order_estimated_delivery_date
+        description: "Estimated delivery date."
+      - name: total_order_value
+        description: "Total value of the order including items."
+      - name: total_items
+        description: "Count of items in the order."
+      - name: payment_type
+        description: "Payment method used."
+      - name: payment_installments
+        description: "Number of installments used."
+      - name: payment_value
+        description: "Total amount paid."
+      - name: delivery_days
+
+  - name: fact_order_items
+    description: "Fact table containing item-level detail for each order."
+    columns:
+      - name: order_item_id
+        description: "Primary key for the order items fact table."
+
+      - name: order_id
+        description: "Foreign key referencing fact_orders."
+        tests:
+          - relationships:
+              arguments:
+                to: ref('fact_orders')
+                field: order_id
+      - name: product_id
+        description: "Foreign key referencing dim_product."
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_id
+      - name: seller_id
+        description: "Foreign key referencing dim_seller."
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_seller')
+                field: seller_id
+      - name: price
+        description: "Price of a single product item."
+      - name: freight_value
+        description: "Freight cost allocated to this item."

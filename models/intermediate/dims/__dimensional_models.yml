@@ -1,0 +1,116 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "Customer dimension table."
+    columns:
+      - name: customer_id
+        description: "Primary key for the customer dimension."
+        tests:
+          - unique
+          - not_null
+      - name: customer_city
+        description: "City where the customer is located."
+      - name: customer_state
+        description: "State where the customer is located."
+      - name: customer_zip_code
+        description: "First digits of the customer ZIP code."
+
+
+  - name: dim_date
+    description: "Date dimension table used for time-based analysis."
+    columns:
+      - name: date_day
+        description: "Calendar date."
+        tests:
+          - unique
+          - not_null
+      - name: day_of_week
+        description: "Numeric representation of the day of week."
+      - name: day_name
+        description: "Name of the weekday."
+      - name: month
+        description: "Month number."
+      - name: month_name
+        description: "Name of the month."
+      - name: quarter
+        description: "Quarter of the year."
+      - name: year
+        description: "Calendar year."
+      - name: is_weekend
+        description: "Boolean indicating if the day is Saturday or Sunday."
+      - name: year_start_date
+        description: "The date day reduced to the year basis"
+
+  - name: dim_geography
+    description: "Geographic dimension for customer and seller locations."
+    columns:
+      - name: zip_code
+        description: "Primary key."
+        tests:
+          - unique
+          - not_null
+      - name: Latitude
+        description: "The coordinates."
+      - name: Longitude
+        description: "The coordinates."
+      - name: city
+        description: "City name."
+      - name: state_abbrev
+        description: "State's abbreviation."
+      - name: state_full
+        description: "The correct state."
+
+  - name: dim_product
+    description: "Product dimension containing category and attributes of products."
+    columns:
+      - name: product_id
+        description: "Primary key for the product dimension."
+        tests:
+          - unique
+          - not_null
+      - name: product_category_name_english
+        description: "Product category in engish."
+      - name: product_category_name
+        description: "Product Category in portugues"
+      - name: price
+        description: "This is the price of each product"
+
+  - name: dim_seller
+    description: "Seller dimension containing business and location information."
+    columns:
+      - name: seller_id
+        description: "Primary key for the seller dimension."
+        tests:
+          - unique
+          - not_null
+      - name: seller_city
+        description: "City where the seller operates."
+      - name: seller_zip_code
+        description: "First digits of the seller ZIP code"
+      - name: seller_state
+        description: "State where the seller operates."
+
+  - name: dim_marketing
+    description: "Marketing dimension including segmentation and acquisition details."
+    columns:
+      - name: mql_id
+        description: "Primary key for the marketing dimension."
+        tests:
+          - unique
+          - not_null
+      - name: seller_id
+        description: "Seller associated with the closed deal."
+        tests:
+          - unique
+          - not_null
+      - name: first_contact_date
+        description: "Timestamp when the lead first interacted."
+      - name: won_date
+        description: "Date when the deal was won."
+      - name: origin
+        description: "Marketing channel through which the customer was acquired."
+      - name: business_segment
+        description: "Marketing segment assigned to the customer."
+      - name: lead_category
+        description: "Type of lead"

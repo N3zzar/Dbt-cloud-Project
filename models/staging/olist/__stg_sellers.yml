@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: stg_sellers
+    description: "Seller profile information including geographical details."
+
+    columns:
+      - name: seller_id
+        description: "Unique identifier for the seller."
+        tests:
+          - not_null
+          - unique
+
+      - name: seller_zip_code
+        description: "Zip code associated with the seller."

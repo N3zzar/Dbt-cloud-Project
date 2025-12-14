@@ -1,0 +1,51 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw Olist e-commerce and marketing funnel data loaded from BigQuery."
+    database: n3zzar
+    schema: dbt_nezzar
+    loader: "Kaggle"
+
+    tables:
+
+      - name: olist_customers_dataset
+        description: "Customer details including unique customer ID and geolocation keys."
+
+      - name: olist_orders_dataset
+        description: "Orders placed on the marketplace with full lifecycle timestamps."
+        config:
+          tags: ["raw", "olist", "source"]
+            # Data is historical (last update in 2018), so freshness checks not required.
+            # I understand how to configure source freshness, but I’m intentionally
+            # disabling it for this static dataset.
+          loaded_at_field: order_purchase_timestamp
+          freshness:
+            warn_after: {count: 9999, period: day}
+            error_after: {count: 9999, period: day}
+
+      - name: olist_order_items_dataset
+        description: "Items contained within each order, including product, seller, and freight cost."
+
+      - name: olist_order_payments_dataset
+        description: "Payments for each order, including payment method, value, and installments."
+
+      - name: olist_products_dataset
+        description: "Product catalog including physical characteristics and product category."
+
+      - name: olist_sellers_dataset
+        description: "Seller information including unique seller ID and location fields."
+
+      - name: olist_geolocation_dataset
+        description: "Mapping of postal codes to latitude/longitude geolocation points."
+
+      - name: product_category_name_translation
+        description: "Mapping of Portuguese product category names to English."
+
+
+      - name: olist_marketing_qualified_leads_dataset
+        description: "Marketing Qualified Leads (MQLs) representing potential sellers."
+
+
+      - name: olist_closed_deals_dataset
+        description: "Deals closed from MQLs, linking to sellers and marking conversion."

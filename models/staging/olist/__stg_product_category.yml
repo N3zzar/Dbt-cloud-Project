@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_product__category__name
+    description: "Table mapping Portuguese product category names to English."
+
+    columns:
+      - name: product_category_name
+        description: "Category name in Portuguese."
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_category_name
+
+      - name: product_category_name_english
+        description: "Category name translated into English."
+        tests:
+          - unique
+          - not_null

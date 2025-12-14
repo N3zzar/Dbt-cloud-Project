@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: stg_marketing_qualified_leads
+    description: "Marketing-qualified lead table containing preliminary lead interaction data."
+    columns:
+      - name: mql_id
+        description: "Primary identifier for each marketing-qualified lead."
+        tests:
+          - unique
+          - not_null
+
+      - name: first_contact_date
+        description: "Date when the lead first interacted."
+
+      - name: origin
+        description: "Acquisition source."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['direct_traffic', 'display', 'email', 'organic_search', 'other', 'paid_search', 'referral', 'social']

@@ -1,0 +1,14 @@
+exposures:
+  - name: sales_dashboard
+    type: dashboard
+    label: "Sales Performance Dashboard"
+    url: https://www.kaggle.com/organizations/olistbr/datasets
+    maturity: high
+    description: "Dashboard in PowerBI showing insights into customers, payments and sales."
+    depends_on:
+      - ref('customer_mart')
+      - ref('payment_mart')
+      - ref('sales_mart')
+    owner:
+      name: "Data Analytics Team"
+      email: "analytics@company.com"

@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: stg_geolocation
+    description: "This dataset contains Brazilian zip codes and their corresponding latitude, longitude, city, and state."
+
+    columns:
+      - name: geolocation_zip_code
+        description: "Zip code associated with the geolocation entry."
+
+      - name: geolocation_lat
+        description: "Latitude coordinate."
+
+      - name: geolocation_lng
+        description: "Longitude coordinate."
+
+      - name: geolocation_city
+        description: "City name associated with the zip code."
+
+      - name: geolocation_state
+        description: "State code associated with the zip code."
