@@ -1,0 +1,15 @@
+snapshots:
+  - name: order_snapshot
+    description: "Snapshot of Olist orders using check strategy and tracking changes"
+    config:
+      schema: snapshots          # Dataset in BigQuery
+      project: n3zzar         # BigQuery project
+      unique_key: order_id
+      strategy: check
+      check_cols:
+        - customer_id
+        - order_status
+        - order_purchase_timestamp
+      dbt_valid_to_current: "to_date('9999-12-31')"
+      meta:
+        hard_delets: ignore

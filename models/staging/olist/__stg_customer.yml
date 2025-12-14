@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: stg_customer
+    description: "Customer details"
+    columns:
+      - name: customer_id
+        description: "Foreign key used to join customers to orders."
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_zip_code
+        description: "Postal code of the customer's location."

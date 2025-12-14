@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Order-level transactional data"
+
+    columns:
+      - name: order_id
+        description: "Primary key for orders."
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Customer placing the order."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customer')
+                field: customer_id
+
+      - name: order_status
+        description: "Current status of the order."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["approved", "delivered", "unavailable", "invoiced", "processing", "shipped", "created", "canceled"]
+
+      - name: order_purchase_timestamp
+        description: "Timestamp when the order was placed."
+
+      - name: order_approved_at
+        description: "Timestamp when the payment was approved."
+
+      - name: order_delivered_to_carrier_date
+        description: "Date when the package was handed to the carrier."
+
+      - name: order_delivered_customer_date
+        description: "Date when the order was delivered to the customer."
+
+      - name: order_estimated_delivery_date
+        description: "Estimated delivery date provided to the customer."
+        tests:
+          - not_null

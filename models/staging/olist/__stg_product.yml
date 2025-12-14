@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: stg_product
+    description: "Product catalog table containing product IDs and their respective category information."
+
+    columns:
+      - name: product_id
+        description: "Primary identifier for a product."
+        tests:
+          - not_null
+          - unique
+
+      - name: product_category_name
+        description: "Original category name of the product."

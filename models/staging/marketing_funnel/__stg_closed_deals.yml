@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: stg_closed_deals
+    description: "Data capturing closed deals linked to sellers after MQL qualification."
+    columns:
+      - name: mql_id
+        description: "Lead identifier linked to the closed deal."
+        tests:
+          - unique
+          - not_null
+
+      - name: seller_id
+        description: "Seller associated with the closed deal."
+        tests:
+          - unique
+          - not_null
+
+      - name: won_date
+        description: "Date when the deal was won."
+
+      - name: business_segment
+        description: "Business segment attributed to the closed deal."
+
+      - name: lead_category
+        description: "Type of lead"

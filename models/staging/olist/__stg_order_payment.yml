@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: stg_order_payments
+    description: "Payment information for each order"
+
+    columns:
+      - name: order_id
+        description: "Order tied to the payment."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+
+      - name: payment_type
+        description: "Type of payment."
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - 'boleto'
+                  - 'credit_card'
+                  - 'debit_card'
+                  - 'voucher'
+                  - 'not_defined'
+
+      - name: payment_installments
+        description: "Number of installments selected by the customer."
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 25
+              inclusive: true
