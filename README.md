@@ -241,7 +241,7 @@ I didnt get to work with this because I'd understood the concept and even implem
 
 Packages
 I installed the popular libraries that dbt users uses including dbt_utils, code_gen, audit_helper and dbt_expectations.
-I didnt eventually use any of the tests feautured in those packages.
+I didnt eventually use most of the packages I installed.
 
 Macros
 Most of the macros I wrote was later done mid project. Understanding the D.R.Y Principle, I saw that I had repeating syntax in my staging models, and such I had to write a macro to eliminate that.
@@ -268,7 +268,7 @@ With the understanding that there are three types of tests in dbt, I wanted to e
 `test_no_negative_revenue` was just to ensure that there was no computational errors when writing the amount people paid for an order.
 
 dbt_project
-Asides what I mentioned that I did in my dbt_project.yml, there were default syntaxes that was also populated based on when I was creating a project in dbt cloud. The other thing I configured was the materialization of my different layers and the schema my models under each layers will go to. Of course some of them was later overriding by config blocks macros but that was just an experiment.
+Asides what I mentioned that I did in my dbt_project.yml, there were default syntaxes that was also populated based on when I was creating a project in dbt cloud. The other thing I configured was the materialization of my different layers, of course some of them was later overridden by config blocks macros but that was just an experiment. I also specified  the schema my models under each layers will go to naming them with the typical names that denotes what they were housing.
 
 Sources
 When I was defining my sources, the new thing I did was to add a loader field which I stated as "Kaggle" which is cool because it explains from where your data was coming from, into the warehouse.
@@ -277,7 +277,40 @@ Did the usual thing I was familiar with, defining my tables and providing a desc
 Exposure
 This was a concept I was not new to, I had tried it in former project so I implemented it here as well because it is important. The new thing I added was the url which ideally should take you to the downstream usage, dashboard in this case but I hadnt built one so I used the dataset link.
 
-md. file
+.md files
 While working in this project, I had a scratch pad I was documenting the experiments I wanted to do, my observations, my thought process and all which was why this section here is robust. I deleted it already but I think it is a great resource for a scratch pad. Dont forget to delete afterwards tho.
 I wanted to experiment again with doc blocks and realizing I havent done enough justice to the explanation of the unique fields in my order status columns which was important for stakeholders to understand the different stages your order can pass through (that a processing status is different from a invoiced status), and for a better analysis like funnel analysis, I had to write a more comprehensive one documenting both the column, the order statuses and the busines logic rules.
 I later reference this in my .yml file so it will appear when viewing my documentation.
+
+Staging model
+I performed all the typical transformation expected at the staging model, including using the source function to connect with my source. I also employed the macros I had written, and used a package `dbt-utils` to exclude some columns instead of just bringing all.
+I also added a .yml file per each model in the two folders where I documented each staging model, the columns they had and then performed the usual tests. In order for it to stay at the top, I added "__" to the naming.
+The documentation was also made faster with AI, but not the tests I wrote because I had to critically assess it to understand where my dataset was faulting.
+I employed tags in this layer and even throughout the model knowing that it also makes it easy when you are trying to do an operation in groups.
+
+Intermediate
+I performed all the typical transformation expected at the intermdiate model, including using several table joins
+This was also quite interesting because prior, I had not worked with creating folders based on the type of table - DIM and FACTS and I didnt understand what they meant by grain level. Thanks to the bootcamp, I was able to understand and apply it. 
+My Dimension folders had models that represented key entities (sellers, location, marketing etc). With the prior understanding of the pecularities of dimension tables (like using qualitative attributes, having unique primary keys etc), I created my models based on that, from two or more tables and allowed it the default materialization which is View.
+My facts folders as well contained models which were created with the characterisitcs of a fact table (like having two or more foreign keys)
+My tags for my dimension models were `intermediate` and `dimension` while for my facts models, it was `intermediate` and `facts`.
+I applied the usual typical transformation expected of intermediate layers too, including not using the source function again.
+I'd read that the typical materialization for your intermediate layer was 'view' and while I had created my facts table under it, I was not sure if it should still be a view. But seeing that this could also still be used for analytics, as it had other several foreign columns, I overrode the default materialization and materialized it as table and also the schema destination.
+I added a unique key in the confog block of my fact_orders to specify that the order_id was the natural business key.
+My documentation was based on Subfolder so it was per subfolder .yml file.
+I also created a date table to be used as my `dim_date` table which would be useful for time intelligence calculations. 
+
+
+Marts Layer
+The idea of the folder naming I used here was based on what the bootcamp specificed on the readme file which was `core` and `marketing` 
+The marts layer was where I had to decide if I was going to keep on using all the orders or not, but knowing that order 1 in the database had repetitions based on the order status, I decided to go with just filtering for delivered orders in all my calculations.
+My marts models was calculated based on core business domain and all metrics relevant was calcualated
+I also defined my tags based on the grain and subfolders.
+I didnt really get to use the dim_date table I created as much as I wanted in the marts layer, because to some extent I had been able to exercise my knowledge on metrics and there was no need to do more.
+My documentation was based on Subfolder so it was per subfolder .yml file.
+
+
+
+
+
+
