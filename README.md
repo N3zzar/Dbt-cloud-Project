@@ -237,7 +237,7 @@ Used doc blocks for a more expansive documentation explaining the various order 
 In the project I completed, I'd used snowflake but realizing that once my trial ended, I wont be able to access it and so I had to switch to postgresql and eventually to AIVEN in that project. Consequently the 30 days trial on my snowflake account has elapsed and in terms of novelty, snowflake, postgresql and aiven wasnt an option. Researching made me found out about Big query which was why I had to go with it.
 
 Analyses folders 
-I didnt get to work with this because I'd understood the concept and even implemented in past project and because it wasnt going to be materialized eventually so I saw no need for that.
+I noticed some orders appeared multiple times with different order statuses. This was going to be a problem if I want to do some calculations unless I explicitly stated that I want only for delivered orders (which I did in my marts layer). Because I may want to do further analysis with other order statuses (like processing, shipped etc), I decided to return the order status each orders had last. A stakeholder may also be interested in this and since I didnt want to materialize it, I wrote all my SQL commands in a .sql file in my analyses folders.
 
 Packages
 I installed the popular libraries that dbt users uses including dbt_utils, code_gen, audit_helper and dbt_expectations.
