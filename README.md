@@ -287,6 +287,7 @@ I performed all the typical transformation expected at the staging model, includ
 I also added a .yml file per each model in the two folders where I documented each staging model, the columns they had and then performed the usual tests. In order for it to stay at the top, I added "__" to the naming.
 The documentation was also made faster with AI, but not the tests I wrote because I had to critically assess it to understand where my dataset was faulting.
 I employed tags in this layer and even throughout the model knowing that it also makes it easy when you are trying to do an operation in groups.
+Learning about severity from dbt platform, I decided to apply it to while writing a test for my order_status column such that if it detect a new order status different from the one I provided in the accepted values, it should output warn instead of the default error message.
 
 Intermediate
 I performed all the typical transformation expected at the intermdiate model, including using several table joins
