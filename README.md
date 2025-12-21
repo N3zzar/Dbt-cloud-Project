@@ -1,12 +1,12 @@
-# Young Data Professional dbt Bootcamp: Olist Brazilian E-Commerce Analytics (Nezzar's Assignment Submission)
+# Olist Brazilian E-Commerce Analytics Platform
+
+**End-to-end analytics engineering with dbt and BigQuery**
 
 ## Overview
 
-This project is an end-to-end **analytics engineering implementation** built on the Olist Brazilian E-Commerce datasets. It demonstrates how raw marketplace data can be transformed into **trusted, analytics-ready facts and dimensions** using modern data engineering and analytics engineering best practices.
+This project is an end-to-end **analytics engineering implementation** built on the Olist Brazilian E-Commerce and Marketing Funnel datasets. It demonstrates how raw marketplace data can be transformed into **trusted, analytics-ready facts and dimensions** using modern analytics engineering best practices.
 
-The project follows a **dbt-first approach** with clear data modeling layers, strong documentation, testing, and reusable macros, enabling reliable downstream analytics for business stakeholders.
-
-It is the implementation of what I had learnt before, what I had practiced before and what the bootcamp taught me.
+The project applies a **dbt-first approach** with layered modeling, testing, documentation, snapshots, and reusable macros to enable consistent, decision-ready analytics for business stakeholders.
 
 ---
 
@@ -14,195 +14,214 @@ It is the implementation of what I had learnt before, what I had practiced befor
 
 Olist is a Brazilian marketplace that connects sellers to customers. The datasets capture the full lifecycle of an order from marketing leads, customer acquisition, ordering, payment, logistics, and fulfillment.
 
-This project answers key business questions across:
+This analytics platform answers key business questions across:
 
-- Customer analytics (LTV, retention, RFM, cohorts)
-- Sales performance (revenue trends, AOV, category performance)
-- Payments behavior (installments, payment methods)
-- Operations & logistics (delivery performance, delays)
-- Marketing effectiveness (lead conversion and seller acquisition)
+* **Customer analytics**: lifetime value, retention, RFM, cohorts
+* **Sales performance**: revenue trends, AOV, category performance
+* **Payments behavior**: installments and payment methods
+* **Operations & logistics**: delivery performance and delays
+* **Marketing effectiveness**: lead conversion and seller acquisition
+
+---
+
+## Key Analytical Guarantees
+
+This project enforces the following analytical assumptions:
+
+* Revenue and customer metrics are calculated **only on delivered orders**
+* Dimension and Fact tables are modeled at clearly defined grains (order-level, item-level, customer-level)
+* Dimensions provide descriptive context and are reusable across marts
+* Metrics are consistent across analyses due to centralized transformations and tests
+
+---
+
+## Architecture
+
+**Raw Data → BigQuery → dbt (Staging → Intermediate → Marts) → Downstream usage**
+
+* Raw datasets are loaded unchanged
+* dbt enforces modeling standards, data quality, and documentation
+* Analytics marts expose business-ready tables for downstream consumption
 
 ---
 
 ## Tech Stack
 
-- **Data Source**: Kaggle (Olist Brazilian E-Commerce & Marketing Funnel datasets)
-- **Data Warehouse**: Google BigQuery
-- **Transformation Tool**: dbt Cloud
-- **Modeling Paradigm**: Dimensional modeling (Staging → Intermediate → Marts)
-- **Analytics Engineering Practices**:
-  - Incremental models
-  - Data tests
-  - Documentation
-  - Macros (DRY transformations)
-  - Semantic layer readiness
-  - Snapshots
+* **Data Source**: Kaggle (Olist Brazilian E-Commerce & Marketing Funnel datasets)
+* **Data Warehouse**: Google BigQuery
+* **Transformation**: dbt Cloud
+* **Modeling Paradigm**: Dimensional modeling
+* **Version Control**: GitHub
+
+**Analytics Engineering Practices**
+
+* Layered modeling
+* Incremental models
+* Data tests and severity handling
+* Snapshots for slowly changing data
+* Macros and Jinja for DRY transformations
+* Source freshness checks
+* Exposures for downstream use cases
 
 ---
 
-Sources
-I defined my souces in the sources.yml file which linked to my raw database.
-I performed a source freshness checks on the olist_orders_dataset using the order_purchase_timetamp column.
-Added decsriptions as well to each tables.
+## Data Modeling Approach
 
-## Data Architecture
+The project follows a layered dbt architecture designed for scalability and trust.
 
-### 1. Raw
-- Kaggle datasets loaded directly into BigQuery
-- No transformation
-- Serves as immutable source of truth
+### 1. Raw Layer
 
-### 2. Staging Layer/Landing Zone (`models/staging/`)
-
-**What I did:**
-- Standardize column names and data types
-- Selecting the proper columns
-- Renaming of some values (unknown to other)
-- Apply lightweight cleaning (trimming, casing, casting)
-- One-to-one mapping with source tables using the {{ source('schema', 'table') }} function.
-- Built the complete staging layer for all my tables.
-- Built using CTEs and Select statements.
-
-**Key staging models:**
-- `stg_orders`
-- `stg_order_items`
-- `stg_order_payments`
-- `stg_customer`
-- `stg_products`
-- `stg_product_category`
-- `stg_sellers`
-- `stg_geolocation`
-- `stg_marketing_qualified_leads`
-- `stg_closed_deals`  
-
-Each staging model is:
-- Fully documented via their respective `.yml` files.
-- The primary key was tested for `not_null`, `unique`, `accepted_values`, and `relationships`
-- Was categorized in folders based on source: 1. Marketing_funnel folder contained datasets gotten on the Olist database. 2) olist folder contained datasets gotten in the marketing funnel provided by olist.
+* Immutable source data loaded into BigQuery
+* No transformations applied
+* Serves as the immutable source of truth
 
 ---
 
-### 3. Intermediate Layer/Cleaned (`models/intermediate/`)
+### 2. Staging Layer (`models/staging/`)
 
-**Key concepts implemented:**
-- Seperation into dims and facts folder
-- Materialised the models under it as tables and views accordingly.
-- Added tags
-- Joining related entities (e.g. orders, customers, payments)
-- Resolving grain (order-level, customer-level, etc.)
-- Built using only the ref function {{ ref('model_name') }}
-- Followed proper naming conventions and folder structure
+**Purpose**
+
+* Standardize column names and data types
+* Apply light, source-aligned cleaning (trimming, casing, casting)
+* Preserve one-to-one mapping with raw tables
+
+**Characteristics**
+
+* Built using `source()` references
+* Built using CTEs and select statments
+* Fully documented and tested
+* Categorized based on source
+* Primary keys tested for:
+  * `not_null`
+  * `unique`
+  * `relationships`
+  * `accepted_values`
 
 ---
 
-#### 4. Dimensions (`models/intermediate/dims/`)
+### 3. Intermediate Layer (`models/intermediate/`)
 
-Dimensions created:
-- `dim_customer` - This contained qualitative attributes on the customer grain level
-- `dim_product` - This contained qualitative attributes on the product grain level
-- `dim_seller` - This contained qualitative attributes on the seller grain level
-- `dim_geography` - This contained qualitative attributes on the zip code grain level
-- `dim_date` - This created from a package, contained qualitative attributes on the date grain level
-- `dim_marketing` - This contained qualitative attributes on the marketing grain level
+**Purpose**
 
-These dimensions:
-- Contain descriptive attributes
-- Are documented and tested via the `__dimensional_models.yml`
-- Serve as the backbone of analytical queries
-- Were materialized as views
-- Tagged as intermediate, dimension.
+* Join related entities (e.g. orders, customers, payments)
+* Establish dimensional structure
+
+**Design**
+
+* Models separated into **dimensions** and **facts**
+* Built exclusively using `ref()`
+* Explicit grain definition per model (order-level, customer-level, etc.)
+* Tagged and materialized appropriately (views vs tables)
+
+---
+
+### 4. Dimensions (`models/intermediate/dims/`)
+
+Key dimensions include:
+
+* `dim_customer`
+* `dim_product`
+* `dim_seller`
+* `dim_geography` (derived from a seed + staging model)
+* `dim_date` (package-generated)
+* `dim_marketing`
+
+**Properties**
+
+* Descriptive, reusable attributes
+* Fully documented and tested
+* Serve as the backbone for analytical queries
+* Materialized as views
+* Tagged as intermediate, dimension.
 
 ---
 
 ### 5. Facts (`models/intermediate/facts/`)
 
-Core fact tables:
-- `fact_orders` - 
-- `fact_order_items` - 
+Key fact tables:
 
-What I did
-I practiced overiding the default target schema.
-Materialized models as tables because they contained columns that could be used.
-Added calculated fields
+* `fact_orders`
+* `fact_order_items`
 
+**Properties**
 
----
-
-### 6. Business Marts/Analytics (`models/Marts/`)
-
-Organized by business domain.
-Seperated into two folders: Core folder contained customer_marts, payment_marts, sales_mart and the marketing folder contained customer_cohorts, customer_rfm_scores, customer_segments.
-Filtering only for delivered order statuses.
-- Built using only the ref function {{ ref('model_name') }}
-- Followed proper naming conventions and folder structure
-- 
-
-#### (`models/Marts/core/`)
-- customer_mart
-- payment_mart
-- sales_mart
-
-#### (`models/Marts/marketing/`)
-- `customer_rfm_scores`
-- `customer_segments`
-- `customer_cohorts`
+* Analytics-ready measures and calculated fields
+* Materialized as tables in the `analytics` schema which is different from the default target schema
+* Fully documented and tested
+* Modeled at consistent, well-defined grains
+* Tagged as intermediate, facts.
+* Materialized as table
 
 ---
 
-## Jinja, Macros, Exposures, and Packages
+### 6. Business Marts (`models/marts/`)
 
-Using jinja, I wrote some macros to ensure **DRY principles**:
-- Safe casting (timestamp)
-- Null handling
-- Trimming and normalization
-- Conditional cleaning logic
-- Whitespace-controlled macro outputs
-- Custom target schemas
-I also installed some various packages - The popular ones.
+**Purpose**
 
-In the exposure.yml file, I defined the downstream usecase as a Performance dashboard which depended on three models in the marts layer. I also added other fields.
+* Expose domain-specific, decision-ready datasets
 
-These macros are used across staging and intermediate layers to maintain consistency.
----
-Analyses and seeds
-I created a csv file in the seeds folder which had the full name of each states in brazil and it was loaded using dbt seeds.
-It was later referenced.
-I didnt get to do any adhoc analyses but I have an idea of how it works.
+**Structure**
 
-Snapshots
-I used the check snapshots strategy because I saw that my orders table doesnt have the updated at column.
-I defined the columns that It should check for changing values which will automatically trigger the snapshots.
+#### Core Marts
 
+* `customer_mart`
+* `payment_mart`
+* `sales_mart`
 
----
+#### Marketing Marts
 
-## Testing Strategy
+* `customer_rfm_scores`
+* `customer_segments`
+* `customer_cohorts`
 
-- Wrote tests in .yml files
-- Performed standard dbt tests (not null, unique, relationship integrity, accepted values)
-- Leveraged on custom tests from packages.
-- Performed not null, unique tests on primary key column
-- Performed not null on necessary columns.
+**Design Principles**
 
-
----
-Documentation
-Performed documentation at the source level via the source.yml file
-Performed documentation at the macro level via the macros.yml file
-In my documentation, I added decsriptions and metadata.
-Used doc blocks for a more expansive documentation explaining the various order status we have.
-
+* Organized by business domain
+* Seperated into two folders
+* Filtered to delivered orders only
+* Materialized as tables
+* Tested and documented per domain
+* Tagged for discoverability, per subfolder
 
 ---
 
-## Key Learnings & Best Practices Demonstrated
+## Data Quality & Governance
 
-- Avoiding cartesian explosions by aggregating before joins
-- Handling multiple payment methods per order
-- Normalizing evolving order statuses
-- Designing fact tables for incremental loads
-- Structuring marts by business domain
-- Building analytics-ready datasets, not just transformed tables
+* Source freshness checks defined on key tables
+* Standard dbt tests applied across all layers
+* Custom tests leveraged via packages
+* Severity configured to distinguish warnings from failures
+* Snapshots implemented using the **check strategy** to track changes in order attributes
+
+---
+
+## Jinja, Macros, Packages & Exposures
+
+* Reusable macros enforce DRY principles across models
+* Macros handle:
+  * Safe timestamp casting
+  * Null handling
+  * Text normalization
+  * Conditional cleaning logic
+  * Target schema customization
+* Popular dbt packages installed in `packages.yml`
+* Exposures defined for downstream analytics use case as a Performance dashboard which depended on three models in the marts layer in my exposure.yml file.
+
+---
+
+## Seeds & Analyses
+
+* Created, loaded, and referenced a seed file in the seeds folder to enrich geographic attributes
+* Ad-hoc analyses queries included to output the last order status recorded per order.
+
+---
+
+## Documentation
+
+* Source-level documentation via `sources.yml`
+* Macro-level documentation via `macros.yml`
+* Model-level documentation across all layers
+* Doc blocks used for detailed business definitions (e.g., order statuses)
 
 ---
 
@@ -210,10 +229,45 @@ Used doc blocks for a more expansive documentation explaining the various order 
 
 1. Load raw datasets into BigQuery
 2. Configure dbt Cloud connection
-3. Run:
+3. Execute:
+
    ```bash
    dbt run
    dbt test
+   ```
+
+---
+
+## What This Project Demonstrates
+
+* Production-style analytics engineering with dbt
+* Dimensional modeling and metric standardization
+* Data quality enforcement and governance
+* Business-aligned analytics marts
+* End-to-end ownership from raw data to insights
+
+---
+
+## Future Improvements
+- Incremental ingestion
+- Metrics
+
+
+---
+
+## Author
+
+**Nezzar**
+Analytics Engineer
+
+---
+
+*This project was developed as part of Young data professionals (YDP) dbt bootcamp and reflects real-world analytics engineering standards and workflows.*
+
+---
+
+
+
 
 
 
@@ -389,7 +443,7 @@ The documentation was also made faster with AI, but not the tests I wrote, becau
 
 I employed tags throughout the project knowing that it also makes it easy and cost effective, when you are trying to do an operation in groups.
 
-Learning about severity from dbt platform, I decided to apply it on my `order_status` column such that if it detects a new order status different from the one I provided in the accepted values, it should output warn instead of the default error message
+Learning about severity from dbt platform, I decided to apply it on my `order_status` column such that if it detects a new order status different from the one I provided in the accepted values, it should output warn instead of the default error message. This will allow production not to break.
 
 ---
 
