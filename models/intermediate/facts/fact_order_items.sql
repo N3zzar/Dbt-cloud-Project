@@ -1,4 +1,4 @@
-{{ config(materialized="view", tags=["intermediate", "fact"], schema = "analytics") }}
+{{ config(materialized="table", tags=["intermediate", "fact"], schema = "analytics") }}
 
 select
     i.order_id,

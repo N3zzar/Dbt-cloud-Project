@@ -1,4 +1,6 @@
 -- stg_marketing__qualified.sql
+{{ config(tags=["staging", "marketing_funnel"]) }}
+
 with
 
     sources as (

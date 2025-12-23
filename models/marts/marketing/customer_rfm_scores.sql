@@ -1,5 +1,4 @@
 {{ config(
-    materialized='table',
     tags=['mart','marketing']
 ) }}
 
@@ -22,5 +21,5 @@ select
     last_order_date,
     frequency,
     monetary,
-    date_diff({{ get_current_date() }}, date(last_order_date), month) as recency_days
+    date_diff({{ get_current_date() }}, date(last_order_date), month) as recency_months
 from customer_orders

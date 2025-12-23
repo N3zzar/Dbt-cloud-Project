@@ -1,4 +1,5 @@
 -- stg_orders.sql
+{{ config(tags=["staging", "olist"]) }}
 
 with 
 

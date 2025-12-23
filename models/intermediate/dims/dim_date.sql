@@ -1,4 +1,6 @@
-{{ config(materialized='view') }}
+{{ config(
+    tags=['intermediate', 'dimension']
+) }}
 
 WITH boundary AS (
     SELECT

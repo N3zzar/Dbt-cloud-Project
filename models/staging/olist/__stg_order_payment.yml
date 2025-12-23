@@ -26,10 +26,13 @@ models:
                   - 'voucher'
                   - 'not_defined'
 
-      - name: payment_installments
+      - name: no_of_installments
         description: "Number of installments selected by the customer."
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 25
-              inclusive: true
+              arguments:
+                min_value: 0
+                max_value: 25
+                inclusive: true
+      - name: payment_value
+        description: "Amount paid for each order"

@@ -1,4 +1,5 @@
 -- stg_geolocation.sql
+{{ config(tags=["staging", "olist"]) }}
 
 with 
 
