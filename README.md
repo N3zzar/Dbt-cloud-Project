@@ -27,6 +27,8 @@ This analytics platform answers key business questions across:
 ## Project DAG
 ![dbt DAG](olist-dbt-dag.png)
 
+---
+
 ## Key Analytical Guarantees
 
 This project enforces the following analytical assumptions:
@@ -59,7 +61,6 @@ This project enforces the following analytical assumptions:
 **Analytics Engineering Practices**
 
 * Layered modeling
-* Incremental models
 * Data tests and severity handling
 * Snapshots for slowly changing data
 * Macros and Jinja for DRY transformations
@@ -111,7 +112,7 @@ The project follows a layered dbt architecture designed for scalability and trus
 
 **Design**
 
-* Models separated into **dimensions** and **facts**
+* Models separated into **dimensions** and **facts** folders
 * Built exclusively using `ref()`
 * Explicit grain definition per model (order-level, customer-level, etc.)
 * Tagged and materialized appropriately (views vs tables)
@@ -149,11 +150,11 @@ Key fact tables:
 **Properties**
 
 * Analytics-ready measures and calculated fields
-* Materialized as tables in the `analytics` schema which is different from the default target schema
+* Materialized in the `analytics` schema which is different from the default target schema
 * Fully documented and tested
 * Modeled at consistent, well-defined grains
 * Tagged as intermediate, facts.
-* Materialized as table
+* Materialized as table as opposed to the default materialization
 
 ---
 
@@ -207,7 +208,7 @@ Key fact tables:
   * Conditional cleaning logic
   * Target schema customization
 * Popular dbt packages installed in `packages.yml`
-* Exposures defined for downstream analytics use case as a Performance dashboard which depended on three models in the marts layer in my exposure.yml file.
+* Exposures defined for downstream analytics use case as a Performance dashboard which depended on two models in the marts layer in my exposure.yml file.
 
 ---
 
@@ -223,7 +224,7 @@ Key fact tables:
 * Source-level documentation via `sources.yml`
 * Macro-level documentation via `macros.yml`
 * Model-level documentation across all layers
-* Doc blocks used for detailed business definitions (e.g., order statuses)
+* Doc blocks used for detailed business definitions (e.g., order statuses) then referenced in .yml files
 
 ---
 
@@ -253,6 +254,7 @@ Key fact tables:
 ## Future Improvements
 - Incremental ingestion
 - Metrics
+- 
 
 
 ---
