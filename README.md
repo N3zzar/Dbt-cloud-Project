@@ -24,6 +24,9 @@ This analytics platform answers key business questions across:
 
 ---
 
+## Project DAG
+![dbt DAG](olist-dbt-dag.png)
+
 ## Key Analytical Guarantees
 
 This project enforces the following analytical assumptions:
