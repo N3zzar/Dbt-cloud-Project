@@ -4,7 +4,9 @@
 
 ## Overview
 
-This project is an end-to-end **analytics engineering implementation** built on the Olist Brazilian E-Commerce and Marketing Funnel datasets. It demonstrates how raw marketplace data can be transformed into **trusted, analytics-ready facts and dimensions** using modern analytics engineering best practices.
+This project is an end-to-end **analytics engineering implementation** built on the Olist Brazilian E-Commerce and Marketing Funnel datasets. 
+
+It demonstrates how raw marketplace data can be transformed into **trusted, analytics-ready facts and dimensions** using modern analytics engineering best practices.
 
 The project applies a **dbt-first approach** with layered modeling, testing, documentation, snapshots, and reusable macros to enable consistent, decision-ready analytics for business stakeholders.
 
