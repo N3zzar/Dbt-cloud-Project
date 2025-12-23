@@ -165,7 +165,6 @@ Key fact tables:
 #### Core Marts
 
 * `customer_mart`
-* `payment_mart`
 * `sales_mart`
 
 #### Marketing Marts
