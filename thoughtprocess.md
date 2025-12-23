@@ -14,7 +14,7 @@ Consequently, the 30-day trial on my Snowflake account elapsed, and in terms of 
 
 ## Analyses
 
-While working in the `analyses` folder, I noticed that some orders appeared multiple times with different order statuses. This would be a problem when performing calculations unless I explicitly filtered for delivered orders (which I did in the marts layer anyways).
+While working in the `analyses` folder, I noticed that some orders appeared multiple times with different order statuses. This would be a problem when performing revenue calculations unless I explicitly filtered for delivered orders (which I did in the marts layer anyways).
 
 Because I may want to perform further analysis using other order statuses (such as processing or shipped), I decided to return the **last order status** each order had. A stakeholder may also be interested in this information, and since I did not want to materialize it, I wrote all the SQL commands in a `.sql` file within the `analyses` folder.
 
@@ -77,7 +77,7 @@ Instead, I used the **check strategy**, implementing the required syntax, includ
 * A unique key
 * A list of columns to check for changes
 
-I could not test whether the snapshot would fully work because doing so would require updating the database, and I could not run DDL commands on BigQuery on free tier. However, since there were no errors, I assume the snapshot configuration is valid.
+I could not test whether the snapshot would fully work because doing so would require updating the database, and I could not run DDL commands on BigQuery on free tier. However, since there were no errors, I assume the snapshot configuration would work fine.
 
 ---
 
@@ -86,13 +86,14 @@ I could not test whether the snapshot would fully work because doing so would re
 With the understanding that dbt supports three types of tests, I wanted to experiment with **singular tests**—assertions written against specific business logic.
 
 * **`test_no_before_order_estimated_date`**
-This was written with the understanding that ideally you dont get a date when your order will likely be delivered when you havent made an order and it can only be after your order date.
+This was written with the understanding that ideally you don't get a date when your order will likely be delivered when you havent made an order and it can only be after your order date.
 
 * **`test_no_negative_delivery`**
-This was written because it also doesnt make sense that the day an order was delivered was before the date the order was purchased
+This was written because it also doesn't make sense that the day an order was delivered was before the date the order was purchased
 
 * **`test_no_negative_revenue`**
 This was just to ensure that there was no computational errors when writing the amount people paid for an order.
+
 ---
 
 ## dbt_project.yml
@@ -128,7 +129,9 @@ This was a concept I was not new to, I had tried it in a former project, so I im
 
 While working on this project, I maintained a scratchpad `.md` files documenting experiments, observations, and my thought process. Although later deleted, this approach proved useful during this project.
 
-I also experimented further with doc blocks to better explain the unique fields from the `order_status` column, which is critical for stakeholder understanding. Different statuses represent different stages in the order lifecycle, and comprehensive documentation was written covering:
+I also experimented further with doc blocks to better explain the unique fields from the `order_status` column, which is critical for stakeholder understanding. 
+
+Different statuses represent different stages in the order lifecycle, and comprehensive documentation was written covering:
 
 * The column itself
 * All possible order statuses
@@ -169,16 +172,18 @@ My Dimension models represent key entities such as sellers, locations, and marke
 
 Understanding the pecularities of dimension tables (like using qualitative attributes, having unique primary keys etc), I created my models based on that, from multiple tables and with the default materialization being View.
 
-My Tags for my dimension models were `intermediate` and `dimension` while 
+My Tags for my dimension models were `intermediate` and `dimension`. 
   
 ### Facts
 My facts folders as well contained models which were created with the characterisitcs of a fact table (like having two or more foreign keys).
 
 My tags for my facts models, it was `intermediate` and `facts`. 
 
-I'd read that the typical materialization for your intermediate layer are views but I was not sure my marts models it should still be a view, but seeing that this could also still be used for analytics, as it had other several foreign columns, I overrode the default materialization and materialized it as table and also the schema destination. 
+I'd read that the typical materialization for your intermediate layer are views but I was not sure my marts models should still be a view, because seeing that this could also still be used for analytics, as it had other several foreign columns, I overrode the default materialization and materialized it as table and also the schema destination. 
 
-I added a unique key in the confog block of my fact_orders to specify that the order_id was the natural business key. My documentation was organized per subfolder using `.yml` file. I also created a date table to be used as my dim_date table which would be useful for time intelligence calculations.
+I added a unique key in the config block of my fact_orders to specify that the order_id was the natural business key.
+
+My documentation was organized per subfolder using `.yml` file. I also created a date table to be used as my dim_date table which would be useful for time intelligence calculations.
 
 ---
 
@@ -189,10 +194,10 @@ The idea of the folder naming I used here follows the folder structure specified
 * `core`
 * `marketing`
 
-The marts layer was where I had to decide if I was going to keep on using all the orders or not, but knowing that an order in the database had multiple order statuses, I decided to go with just filtering for delivered orders in all my calculations. 
+The marts layer was where I had to decide if I was going to keep on using all the orders or not, but knowing that an order in the database had multiple order statuses, I decided to go with just filtering for delivered orders in some of my calculations. 
 
-My marts models was calculated based on core business domain and all metrics relevant was calcualated. I also defined my tags based on the grain and subfolders. Although a `dim_date` table was created, it was not heavily used in this layer. 
+My marts models was calculated based on core business domain and all metrics relevant was calculated. I also defined my tags based on the grain and subfolders. Although a `dim_date` table was created, it was not heavily used in this layer. 
 
 My documentation was organized per Subfolder using a `.yml` file.
 
-Models were built around core business domains, metrics were calculated accordingly, and tags were defined based on grain and subfolders. Although a `dim_date` table was created, it was not heavily used in this layer.
+Models were built around core business domains, metrics were calculated accordingly, and tags were defined based on grain and subfolders.
