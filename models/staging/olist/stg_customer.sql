@@ -1,4 +1,5 @@
 -- models/staging/stg_customer.sql
+{{ config(tags=["staging", "olist"]) }}
 
 with raw_source as (
     select *

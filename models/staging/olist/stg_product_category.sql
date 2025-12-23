@@ -1,4 +1,5 @@
 -- stg_product__catgory__name.sql
+{{ config(tags=["staging", "olist"]) }}
 
 with 
 

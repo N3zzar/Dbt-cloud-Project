@@ -1,0 +1,36 @@
+version: 2
+
+macros:
+  - name: get_current_date
+    description: |
+      Returns the current date used for time-based calculations.
+
+      **Behavior**
+      - If `use_fixed_today = true`, returns the date specified in `fixed_today`
+      - Otherwise, returns the warehouse system date (`CURRENT_DATE()`)
+
+  - name: generate_schema_name
+    description: |
+      Determines the target schema name for dbt models.
+
+      This macro overrides dbt’s default schema generation behavior by
+      returning a model-specific schema when provided, or falling back
+      to the active environment schema.
+
+      **Behavior**
+      - If `custom_schema_name` is defined, that value is used as the target schema
+      - Otherwise, the schema defined in the dbt target (`target.schema`) is used
+
+  - name: unknown_to_other
+    description: |
+      Standardizes categorical column values by mapping unknown or null
+      values to a consistent fallback category.
+
+      **Behavior**
+      - Converts `NULL` or `'unknown'` values to `'other'`
+      - Trims whitespace and lowercases valid values
+      - Outputs a renamed column using the provided alias
+
+      **Arguments**
+      - `column_name`: Source column to standardize
+      - `new_column_name`: Alias for the transformed column

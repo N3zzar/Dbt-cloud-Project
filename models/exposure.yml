@@ -1,13 +1,12 @@
 exposures:
-  - name: sales_dashboard
+  - name: "Olist_Performance_Dashboard"
     type: dashboard
-    label: "Sales Performance Dashboard"
+    label: "Olist Performance Dashboard"
     url: https://www.kaggle.com/organizations/olistbr/datasets
     maturity: high
-    description: "Dashboard in PowerBI showing insights into customers, payments and sales."
+    description: "Dashboard in PowerBI showing insights into customers, payments and sales for Olist Company."
     depends_on:
       - ref('customer_mart')
-      - ref('payment_mart')
       - ref('sales_mart')
     owner:
       name: "Data Analytics Team"

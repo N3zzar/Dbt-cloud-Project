@@ -1,4 +1,6 @@
-{{ config(materialized='table') }}
+{{ config(
+    tags=['intermediate', 'dimension']
+) }}
 
 with mapping as (
     select

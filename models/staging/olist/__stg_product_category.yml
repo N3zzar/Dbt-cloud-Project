@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_product__category__name
+  - name: stg_product_category
     description: "Table mapping Portuguese product category names to English."
 
     columns:
@@ -12,7 +12,7 @@ models:
           - unique
           - relationships:
               arguments:
-                to: ref('stg_products')
+                to: ref('stg_product')
                 field: product_category_name
 
       - name: product_category_name_english

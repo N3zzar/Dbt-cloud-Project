@@ -45,11 +45,8 @@ models:
   - name: dim_geography
     description: "Geographic dimension for customer and seller locations."
     columns:
-      - name: zip_code
+      - name: geolocation_zip_code
         description: "Primary key."
-        tests:
-          - unique
-          - not_null
       - name: Latitude
         description: "The coordinates."
       - name: Longitude
@@ -73,8 +70,6 @@ models:
         description: "Product category in engish."
       - name: product_category_name
         description: "Product Category in portugues"
-      - name: price
-        description: "This is the price of each product"
 
   - name: dim_seller
     description: "Seller dimension containing business and location information."

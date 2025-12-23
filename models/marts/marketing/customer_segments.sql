@@ -1,12 +1,11 @@
 {{ config(
-    materialized='table',
     tags=['mart','marketing']
 ) }}
 
 with rfm as (
     select
         customer_id,
-        recency_days,
+        recency_months,
         frequency,
         monetary
     from {{ ref('customer_rfm_scores') }}
@@ -15,14 +14,18 @@ with rfm as (
 segments as (
     select
         customer_id,
-        recency_days,
+        recency_months,
         frequency,
         monetary,
-        case
-            when recency_days <= 30 and frequency >= 5 and monetary >= 500 then 'Champions'
-            when recency_days <= 60 and frequency >= 3 and monetary >= 300 then 'Loyal'
-            when recency_days > 90 and frequency = 1 then 'At Risk'
-            else 'Regular'
+case
+            when
+                recency_months <= 25 and frequency = 1 and monetary >= 700000
+                then 'Champions'
+            when
+                recency_months <= 45 and frequency = 1 and monetary >= 400000
+                then 'Loyal'
+            when recency_months > 35 and frequency = 1 and monetary >= 100000 then 'Regular'
+            else 'At risk'
         end as rfm_segment
     from rfm
 )
