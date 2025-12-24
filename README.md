@@ -2,6 +2,9 @@
 
 **End-to-end analytics engineering with dbt and BigQuery**
 
+**Interactive dbt Docs**: https://dbt-olist.netlify.app
+
+
 ## Overview
 
 This project is an end-to-end **analytics engineering implementation** built on the Olist Brazilian E-Commerce and Marketing Funnel datasets. 
@@ -222,6 +225,12 @@ Key fact tables:
 ---
 
 ## Documentation
+
+Interactive dbt documentation covering models, sources, tests, lineage, and exposures:
+
+🔗 https://dbt-olist.netlify.app
+
+Additional documentation practices implemented in this project include:
 
 * Source-level documentation via `sources.yml`
 * Macro-level documentation via `macros.yml`
