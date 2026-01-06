@@ -62,6 +62,7 @@ This project enforces the following analytical assumptions:
 * **Transformation**: dbt Cloud
 * **Modeling Paradigm**: Dimensional modeling
 * **Version Control**: GitHub
+* **CI/CD**: dbt Cloud
 
 **Analytics Engineering Practices**
 
@@ -73,6 +74,23 @@ This project enforces the following analytical assumptions:
 * Exposures for downstream use cases
 
 ---
+
+## Continuous Integration & Deployment (dbt Cloud)
+
+This project also combines pull request–based Slim CI with scheduled full builds.
+
+**Pull Request Validation (Slim CI)**  
+All pull requests trigger a Slim CI job in dbt Cloud. This job runs only modified models and their downstream dependencies using production artefacts for unchanged models.
+
+**Scheduled Full Build**  
+In addition to Slim CI, a scheduled monthly job (that runs on the first day of every month by 3 p.m) executes a full dbt build across the entire DAG.
+
+**Deployment Flow*  
+Merged changes are deployed to the production environment via dbt Cloud jobs, materializing analytics marts and enforcing data quality checks before data is exposed for downstream use.
+
+
+---
+
 
 ## Data Modeling Approach
 
@@ -236,6 +254,7 @@ Additional documentation practices implemented in this project include:
 * Macro-level documentation via `macros.yml`
 * Model-level documentation across all layers
 * Doc blocks used for detailed business definitions (e.g., order statuses) then referenced in .yml files
+
 
 ---
 
