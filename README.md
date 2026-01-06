@@ -88,8 +88,8 @@ In addition to Slim CI, a scheduled monthly job (that runs on the first day of e
 **Deployment Flow*  
 Merged changes are deployed to the production environment via dbt Cloud jobs, materializing analytics marts and enforcing data quality checks before data is exposed for downstream use.
 
-## Deployment 
-![Screenshots of some jobs](continuous deployement.png)
+![one of my CI jobs](Continuous-Deployment.jpg)
+
 
 ---
 
