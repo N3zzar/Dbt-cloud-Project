@@ -13,7 +13,7 @@ It demonstrates how raw marketplace data can be transformed into **trusted, anal
 
 The project applies a **dbt-first approach** with layered modeling, testing, documentation, snapshots, and reusable macros to enable consistent, decision-ready analytics for business stakeholders.
 
----
+--- 
 
 ## Business Context
 
@@ -88,6 +88,8 @@ In addition to Slim CI, a scheduled monthly job (that runs on the first day of e
 **Deployment Flow*  
 Merged changes are deployed to the production environment via dbt Cloud jobs, materializing analytics marts and enforcing data quality checks before data is exposed for downstream use.
 
+## Deployment 
+![Screenshots of some jobs](continuous deployement.png)
 
 ---
 
