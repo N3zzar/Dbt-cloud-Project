@@ -30,6 +30,7 @@ This analytics platform answers key business questions across:
 ---
 
 ## Project DAG
+
 ![dbt DAG](olist-dbt-dag.png)
 
 ---
