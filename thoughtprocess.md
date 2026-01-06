@@ -201,3 +201,9 @@ My marts models was calculated based on core business domain and all metrics rel
 My documentation was organized per Subfolder using a `.yml` file.
 
 Models were built around core business domains, metrics were calculated accordingly, and tags were defined based on grain and subfolders.
+
+---
+
+## CI/CD
+
+I learnt this on the dbt platform and was able to know about Slim CI and how it is different from CI. Decided to implement it. After a few failures, my CI job started working well. Then I added a Slim CI job instead of replacing my main CI job. In a proper work environment, Slim CI is a more recommended approach as it helps save cost, compute, and time.
