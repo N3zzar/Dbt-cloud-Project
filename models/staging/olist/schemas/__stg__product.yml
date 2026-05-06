@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_product
+  - name: stg__product
     description: "Product catalog table containing product IDs and their respective category information."
 
     columns:

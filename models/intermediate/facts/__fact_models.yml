@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: fact_orders
+  - name: fct_orders
     description: "Fact table containing order-level metrics, dates, amounts, and delivery performance."
     columns:
       - name: order_id
@@ -39,7 +39,7 @@ models:
         description: "Total amount paid."
       - name: delivery_days
 
-  - name: fact_order_items
+  - name: fct_order_items
     description: "Fact table containing item-level detail for each order."
     columns:
       - name: order_item_id

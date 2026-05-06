@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_geolocation
+  - name: stg__geolocation
     description: "This dataset contains Brazilian zip codes and their corresponding latitude, longitude, city, and state."
 
     columns:

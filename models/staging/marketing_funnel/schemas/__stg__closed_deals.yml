@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_closed_deals
+  - name: stg__closed_deals
     description: "Data capturing closed deals linked to sellers after MQL qualification."
     columns:
       - name: mql_id

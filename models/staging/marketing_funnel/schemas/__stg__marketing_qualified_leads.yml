@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_marketing_qualified_leads
+  - name: stg__marketing_qualified_leads
     description: "Marketing-qualified lead table containing preliminary lead interaction data."
     columns:
       - name: mql_id

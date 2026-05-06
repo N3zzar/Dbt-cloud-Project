@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_order_items
+  - name: stg__order_items
     description: "Line-level data for items within each order including pricing and freight information."
 
     columns:

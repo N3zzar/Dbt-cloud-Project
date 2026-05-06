@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: customer_mart
+  - name: mart_customer
     description: "Aggregated customer-level metrics including purchase behavior, revenue, order counts, and customer lifetime."
     columns:
       - name: customer_id
@@ -57,7 +57,7 @@ models:
         owner: "data-analytics"
         domain: "customer"
         tags: ["mart", "customer"]
-  - name: payment_mart
+  - name: mart_payment
     description: "Aggregated sales data by payment type, including order, customer, product, and seller information."
     columns:
       - name: order_id
@@ -119,7 +119,7 @@ models:
         owner: "data-analytics"
         domain: "sales"
         tags: ["mart", "payments"]
-  - name: sales_mart
+  - name: mart_sales
     description: "Order-level sales fact table with aggregated metrics including delivery performance, payment details, and order counts."
     columns:
       - name: order_id

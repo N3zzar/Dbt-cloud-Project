@@ -9,8 +9,8 @@ with
             count(o.order_id) as total_orders,
             count(oi.order_item_id) as total_items_purchased,
             sum(payment_value) as total_revenue
-        from {{ ref("fact_orders") }} o
-        left join {{ ref('fact_order_items') }} oi
+        from {{ ref("fct_orders") }} o
+        left join {{ ref('fct_order_items') }} oi
         on o.order_id = oi.order_id
         where o.order_status = 'delivered'
         group by o.customer_id

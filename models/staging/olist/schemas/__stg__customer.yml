@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_customer
+  - name: stg__customer
     description: "Customer details"
     columns:
       - name: customer_id

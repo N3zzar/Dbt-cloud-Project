@@ -4,7 +4,7 @@ WITH boundary AS (
     SELECT
         MIN(order_purchase_timestamp) AS start_date,
         MAX(order_delivered_customer_date) AS end_date
-    FROM {{ ref('fact_orders') }}
+    FROM {{ ref('fct_orders') }}
 ),
 
 date_spine AS (

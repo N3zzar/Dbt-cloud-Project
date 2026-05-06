@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_orders
+  - name: stg__orders
     description: "Order-level transactional data"
 
     columns:

@@ -8,5 +8,5 @@ select
     i.seller_id,
     i.price,
     i.freight_value
-from {{ ref("stg_order_items") }} i
+from {{ ref("stg__order_items") }} i
 left join {{ ref("dim_product") }} p on i.product_id = p.product_id

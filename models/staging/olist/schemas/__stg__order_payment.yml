@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_order_payments
+  - name: stg__order_payments
     description: "Payment information for each order"
 
     columns:
@@ -30,6 +30,7 @@ models:
         description: "Number of installments selected by the customer."
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 25
-              inclusive: true
+              arguments:
+                min_value: 0
+                max_value: 25
+                inclusive: true

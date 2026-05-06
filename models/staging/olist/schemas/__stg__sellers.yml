@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_sellers
+  - name: stg__sellers
     description: "Seller profile information including geographical details."
 
     columns:

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_product__category__name
+  - name: stg__product_category_name
     description: "Table mapping Portuguese product category names to English."
 
     columns:

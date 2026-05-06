@@ -14,7 +14,7 @@ geo as (
         avg(geolocation_lng) as longitude,
         any_value(geolocation_city) as city,
         upper(trim(any_value(geolocation_state))) as state_abbrev
-    from {{ ref('stg_geolocation') }}
+    from {{ ref('stg__geolocation') }}
     where geolocation_lat between -90 and 90
       and geolocation_lng between -180 and 180
     group by 1

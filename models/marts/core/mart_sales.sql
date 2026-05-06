@@ -28,8 +28,8 @@ with base_orders as (
         end as is_delayed,
         payment_type,
         cast(avg(o.no_of_installments) as int) as payment_installments,
-    from {{ ref('fact_orders') }} o
-    left join {{ ref('fact_order_items') }} oi
+    from {{ ref('fct_orders') }} o
+    left join {{ ref('fct_order_items') }} oi
         on o.order_id = oi.order_id
     where o.order_status = 'delivered'
     group by o.order_id, o.customer_id, oi.seller_id, 

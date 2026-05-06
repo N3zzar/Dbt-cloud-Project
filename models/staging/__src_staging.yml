@@ -39,7 +39,7 @@ sources:
       - name: olist_geolocation_dataset
         description: "Mapping of postal codes to latitude/longitude geolocation points."
 
-      - name: product_category_name_translation
+      - name: olist_product_category_name_translation
         description: "Mapping of Portuguese product category names to English."
 
 

@@ -13,8 +13,8 @@ select
     oi.product_category_name_english,
     oi.seller_id,
     s.seller_state
-from {{ ref('fact_order_items') }} oi
-left join {{ ref('fact_orders') }} o
+from {{ ref('fct_order_items') }} oi
+left join {{ ref('fct_orders') }} o
     using (order_id)
 left join {{ ref('dim_seller') }} s
     on oi.seller_id = s.seller_id

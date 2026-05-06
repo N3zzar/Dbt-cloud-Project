@@ -10,8 +10,8 @@ with customer_orders as (
         max(order_purchase_timestamp) as last_order_date,
         count(distinct o.order_id) as frequency,
         sum(payment_value) as monetary
-    from {{ ref('fact_orders') }} o
-    left join {{ ref('fact_order_items') }} oi
+    from {{ ref('fct_orders') }} o
+    left join {{ ref('fct_order_items') }} oi
         on o.order_id = oi.order_id
     group by customer_id
 )

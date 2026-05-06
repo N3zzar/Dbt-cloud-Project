@@ -11,6 +11,6 @@ select
     m.origin,
     d.business_segment,
     d.lead_category 
-from {{ ref('stg_closed_deals') }} d
-left join {{ ref('stg_marketing_qualified_leads') }} m
+from {{ ref('stg__closed_deals') }} d
+left join {{ ref('stg__marketing_qualified_leads') }} m
     on d.mql_id = m.mql_id

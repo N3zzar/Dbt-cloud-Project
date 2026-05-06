@@ -6,9 +6,9 @@ exposures:
     maturity: high
     description: "Dashboard in PowerBI showing insights into customers, payments and sales."
     depends_on:
-      - ref('customer_mart')
-      - ref('payment_mart')
-      - ref('sales_mart')
+      - ref('mart_customer')
+      - ref('mart_payment')
+      - ref('mart_sales')
     owner:
       name: "Data Analytics Team"
       email: "analytics@company.com"
