@@ -69,7 +69,7 @@ models:
         config:
           meta:
             metrics:
-              max_revenue:
+              min_revenue:
                 type: min
 
       - name: recency_days
