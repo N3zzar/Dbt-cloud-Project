@@ -9,6 +9,11 @@ models:
         tests:
           - unique
           - not_null
+          - relationships:
+              arguments: 
+                to: ref('stg__marketing_qualified_leads')
+                field: mql_id
+
 
       - name: seller_id
         description: "Seller associated with the closed deal."

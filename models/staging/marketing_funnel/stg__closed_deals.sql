@@ -7,7 +7,7 @@ filtered as (
     select
         mql_id,
         seller_id,
-        cast(won_date as timestamp) as won_date,
+        cast(won_date as date) as won_date,
         {{ unknown_to_other ('lead_type', 'lead_category') }},
         {{ unknown_to_other ( 'business_segment', 'business_segment') }}
     from source

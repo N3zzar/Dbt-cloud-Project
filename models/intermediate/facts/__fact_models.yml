@@ -1,6 +1,11 @@
 version: 2
 
 models:
+
+  # ==========================
+  # FACT ORDER 
+  # ==========================
+
   - name: fct_orders
     description: "Fact table containing order-level metrics, dates, amounts, and delivery performance."
     columns:
@@ -28,7 +33,7 @@ models:
       - name: order_estimated_delivery_date
         description: "Estimated delivery date."
       - name: total_order_value
-        description: "Total value of the order including items."
+        description: "Total value of the order including items paid."
       - name: total_items
         description: "Count of items in the order."
       - name: payment_type
@@ -36,8 +41,10 @@ models:
       - name: payment_installments
         description: "Number of installments used."
       - name: payment_value
-        description: "Total amount paid."
-      - name: delivery_days
+        description: "Total amount to be paid."
+        tests:
+          - not_null
+
 
   - name: fct_order_items
     description: "Fact table containing item-level detail for each order."
@@ -70,3 +77,31 @@ models:
         description: "Price of a single product item."
       - name: freight_value
         description: "Freight cost allocated to this item."
+
+  # ==========================
+  # FACTS MARKETING
+  # ==========================
+  - name: fct_marketing
+    description: "Marketing marts including segmentation and acquisition details."
+    columns:
+      - name: mql_id
+        description: "Primary key for the marketing dimension."
+        tests:
+          - unique
+          - not_null
+      - name: seller_id
+        description: "Seller associated with the closed deal."
+        tests:
+          - unique
+          - not_null
+
+      - name: first_contact_date
+        description: "Timestamp when the lead first interacted."
+      - name: won_date
+        description: "Date when the deal was won."
+      - name: origin
+        description: "Marketing channel through which the customer was acquired."
+      - name: business_segment
+        description: "Marketing segment assigned to the customer."
+      - name: lead_category
+        description: "Type of lead"

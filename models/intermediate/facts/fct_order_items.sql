@@ -1,4 +1,14 @@
+-- fct_order_items.sql
+-- Grain: One row per order_item_id
+-- Path: 
+-- Purpose: 
+
+-- Powers Downstream
+
+
 {{ config(materialized="view", tags=["intermediate", "fact"], schema = "analytics") }}
+
+
 
 select
     i.order_id,

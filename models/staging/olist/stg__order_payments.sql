@@ -15,6 +15,8 @@ filtered as (
 
 renamed as(
     select 
+        {{ dbt_utils.generate_surrogate_key([
+            'order_id']) }} as payment_sk,
         order_id,
         lower(trim(payment_type)) as payment_type,
         cast(payment_installments as int64) as no_of_installments,

@@ -5,6 +5,12 @@ models:
     description: "Table mapping Portuguese product category names to English."
 
     columns:
+      - name: product_category_name_sk
+        description: "Surrogate key for primary key purpose"
+        tests:  
+          - not_null
+          - unique
+
       - name: product_category_name
         description: "Category name in Portuguese."
         tests:

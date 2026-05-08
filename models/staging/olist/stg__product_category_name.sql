@@ -17,4 +17,7 @@ renamed as (
 
 )
     
-select * from renamed
+select  
+        {{ dbt_utils.generate_surrogate_key(['product_category_name']) }} as product_category_name_sk,
+        *
+ from renamed

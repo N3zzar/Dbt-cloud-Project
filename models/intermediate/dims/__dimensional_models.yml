@@ -1,6 +1,12 @@
 version: 2
 
 models:
+
+  # ==========================
+  # CUSTOMER DIMENSION
+  # ==========================
+
+
   - name: dim_customer
     description: "Customer dimension table."
     columns:
@@ -16,6 +22,11 @@ models:
       - name: customer_zip_code
         description: "First digits of the customer ZIP code."
 
+
+
+  # ==========================
+  # DATE DIMENSION
+  # ==========================
 
   - name: dim_date
     description: "Date dimension table used for time-based analysis."
@@ -42,6 +53,11 @@ models:
       - name: year_start_date
         description: "The date day reduced to the year basis"
 
+
+  # ==========================
+  # GEOGRAPHY DIMENSION
+  # ==========================
+
   - name: dim_geography
     description: "Geographic dimension for customer and seller locations."
     columns:
@@ -59,7 +75,12 @@ models:
       - name: state_abbrev
         description: "State's abbreviation."
       - name: state_full
-        description: "The correct state."
+        description: "The full state name."
+
+
+  # ==========================
+  # PRODUCT DIMENSION
+  # ==========================
 
   - name: dim_product
     description: "Product dimension containing category and attributes of products."
@@ -76,6 +97,11 @@ models:
       - name: price
         description: "This is the price of each product"
 
+
+  # ==========================
+  # SELLER DIMENSION
+  # ==========================
+
   - name: dim_seller
     description: "Seller dimension containing business and location information."
     columns:
@@ -90,27 +116,3 @@ models:
         description: "First digits of the seller ZIP code"
       - name: seller_state
         description: "State where the seller operates."
-
-  - name: dim_marketing
-    description: "Marketing dimension including segmentation and acquisition details."
-    columns:
-      - name: mql_id
-        description: "Primary key for the marketing dimension."
-        tests:
-          - unique
-          - not_null
-      - name: seller_id
-        description: "Seller associated with the closed deal."
-        tests:
-          - unique
-          - not_null
-      - name: first_contact_date
-        description: "Timestamp when the lead first interacted."
-      - name: won_date
-        description: "Date when the deal was won."
-      - name: origin
-        description: "Marketing channel through which the customer was acquired."
-      - name: business_segment
-        description: "Marketing segment assigned to the customer."
-      - name: lead_category
-        description: "Type of lead"

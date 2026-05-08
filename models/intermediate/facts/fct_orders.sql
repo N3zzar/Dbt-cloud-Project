@@ -1,3 +1,10 @@
+-- fct_orders.sql
+-- Grain: One row per order_id
+-- Path: Olist
+-- Purpose: 
+
+-- Powers Downstream
+
 {{ config(
     materialized= 'table',
     unique_key = 'order_id',
@@ -20,7 +27,7 @@ count(oi.order_item_id) as total_items,
 count(distinct product_id) as total_product,
 count(distinct oi.seller_id) as total_sellers,
 sum(op.payment_value) as payment_value,
-sum(oi.freight_value + oi.price) as total_order_value
+coalesce(sum(oi.freight_value + oi.price), 0) as total_order_value
 from {{ ref('stg__orders') }} o 
 left join {{ ref('stg__order_items') }} oi on o.order_id = oi.order_id
 left join {{ ref('stg__order_payments') }} op on o.order_id = op.order_id

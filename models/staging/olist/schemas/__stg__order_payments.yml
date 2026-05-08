@@ -5,6 +5,11 @@ models:
     description: "Payment information for each order"
 
     columns:
+      - name: payment_sk
+        description: "Surrogate key to identify payment grain"
+        tests:
+          - not_null
+
       - name: order_id
         description: "Order tied to the payment."
         tests:
@@ -26,7 +31,7 @@ models:
                   - 'voucher'
                   - 'not_defined'
 
-      - name: payment_installments
+      - name: no_of_installments
         description: "Number of installments selected by the customer."
         tests:
           - dbt_utils.accepted_range:

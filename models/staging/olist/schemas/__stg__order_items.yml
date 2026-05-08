@@ -18,6 +18,8 @@ models:
 
       - name: order_item_id
         description: "Line number of the item within the order."
+        tests: 
+          - not_null
 
       - name: product_id
         description: "Product associated with the order item."
