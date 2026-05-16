@@ -2,7 +2,8 @@
 
 {{ config(
     materialized='table',
-    tags=['intermediate', 'dimension']
+    tags=['intermediate', 'dimension'],
+    schema = "analytics"
 ) }}
 
 select

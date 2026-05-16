@@ -1,0 +1,570 @@
+semantic_models:
+
+  # =====================================================
+  # 1. ORDERS SEMANTIC MODEL
+  # Grain: One row per order
+  # =====================================================
+
+  - name: orders
+    description: Order-level transactional fact table.
+
+    model: ref('fct_orders')
+
+    defaults:
+      agg_time_dimension: order_purchase_timestamp
+
+    entities:
+      - name: customer_order
+        type: primary
+        expr: order_id
+
+      - name: customer
+        type: foreign
+        expr: customer_id
+
+    dimensions:
+
+      # -------------------------
+      # Time Dimensions
+      # -------------------------
+
+      - name: order_purchase_timestamp
+        type: time
+        expr: order_purchase_timestamp
+
+        type_params:
+          time_granularity: day
+
+      - name: order_delivered_customer_date
+        type: time
+        expr: order_delivered_customer_date
+
+        type_params:
+          time_granularity: day
+
+      # -------------------------
+      # Categorical Dimensions
+      # -------------------------
+
+      - name: order_status
+        type: categorical
+
+      - name: order_size_bucket
+        type: categorical
+
+      - name: is_delayed
+        type: categorical
+
+      - name: is_delivered_on_time
+        type: categorical
+
+    measures:
+
+      # -------------------------
+      # Revenue Measures
+      # -------------------------
+
+      - name: total_order_revenue
+        description: Revenue including product price and freight.
+        agg: sum
+        expr: total_order_value
+
+      - name: total_payment_value
+        description: Total payment received.
+        agg: sum
+        expr: total_payment_value
+
+      # -------------------------
+      # Order Measures
+      # -------------------------
+
+      - name: order_count
+        description: Count of distinct orders
+        agg: count_distinct
+        expr: order_id
+
+      - name: total_items
+        description: Total items purchased.
+        agg: sum
+        expr: total_items
+
+      - name: total_products
+        description: Total distinct products purchased.
+        agg: sum
+        expr: total_products
+
+      - name: total_sellers
+        description: Total distinct sellers involved in orders.
+        agg: sum
+        expr: total_sellers
+
+      # -------------------------
+      # Delivery Measures
+      # -------------------------
+
+      - name: avg_delivery_days
+        description: Average delivery duration.
+        agg: average
+        expr: delivery_days
+
+      - name: avg_estimated_delivery_days
+        description: Average estimated delivery duration.
+        agg: average
+        expr: estimated_delivery_days
+
+      - name: avg_delivery_delay_days
+        description: Average delivery delay duration.
+        agg: average
+        expr: delivery_delay_days
+
+      # -------------------------
+      # SLA / Fulfillment Measures
+      # -------------------------
+
+      - name: delayed_orders
+        description: Count of delayed orders.
+        agg: sum
+        expr: case when is_delayed then 1 else 0 end
+
+      - name: on_time_orders
+        description: Count of orders delivered on time.
+        agg: sum
+        expr: case when is_delivered_on_time then 1 else 0 end
+
+
+  # =====================================================
+  # 2. ORDER ITEMS SEMANTIC MODEL
+  # Grain: One row per order item
+  # =====================================================
+
+  - name: order_items
+    description: Item-level order transaction facts.
+
+    model: ref('fct_order_items')
+
+    defaults:
+      agg_time_dimension: order_purchase_timestamp
+
+    entities:
+
+      - name: order_item
+        type: primary
+        expr: order_item_id
+
+      - name: customer_order
+        type: foreign
+        expr: order_id
+
+      - name: product
+        type: foreign
+        expr: product_id
+
+      - name: seller
+        type: foreign
+        expr: seller_id
+
+    dimensions:
+
+      - name: order_purchase_timestamp
+        type: time
+        expr: order_purchase_timestamp
+
+        type_params:
+          time_granularity: day
+
+      - name: order_status
+        type: categorical
+
+      - name: product_category_name_english
+        type: categorical
+
+    measures:
+
+      # -------------------------
+      # Revenue Measures
+      # -------------------------
+
+      - name: item_revenue
+        description: Revenue generated from product sales only.
+        agg: sum
+        expr: price
+
+      - name: freight_revenue
+        description: Revenue generated from freight charges.
+        agg: sum
+        expr: freight_value
+
+      - name: total_item_value
+        description: Combined item and freight value.
+        agg: sum
+        expr: total_item_value
+
+      # -------------------------
+      # Sales Measures
+      # -------------------------
+
+      - name: units_sold
+        description: Total order items sold.
+        agg: count
+        expr: order_item_id
+
+      - name: order_item_count
+        description: Count of distinct order items.
+        agg: count_distinct
+        expr: order_item_id
+
+
+  # =====================================================
+  # 3. MARKETING SEMANTIC MODEL
+  # Grain: One row per closed deal
+  # =====================================================
+
+  - name: marketing
+    description: Marketing qualified leads and closed deal facts.
+
+    model: ref('fct_marketing')
+
+    defaults:
+      agg_time_dimension: won_date
+
+    entities:
+
+      - name: mql
+        type: primary
+        expr: mql_id
+
+      - name: seller
+        type: foreign
+        expr: seller_id
+
+    dimensions:
+
+      # -------------------------
+      # Time Dimensions
+      # -------------------------
+
+      - name: first_contact_date
+        type: time
+        expr: first_contact_date
+
+        type_params:
+          time_granularity: day
+
+      - name: won_date
+        type: time
+        expr: won_date
+
+        type_params:
+          time_granularity: day
+
+      # -------------------------
+      # Marketing Dimensions
+      # -------------------------
+
+      - name: origin
+        description: Marketing acquisition source.
+        type: categorical
+
+      - name: business_segment
+        type: categorical
+
+      - name: lead_category
+        type: categorical
+
+    measures:
+
+      # -------------------------
+      # Funnel Measures
+      # -------------------------
+
+      - name: closed_deals
+        description: Total closed deals.
+        agg: count_distinct
+        expr: mql_id
+
+      - name: seller_count
+        description: Total sellers associated with won deals.
+        agg: count_distinct
+        expr: seller_id
+
+      # -------------------------
+      # Sales Cycle Measures
+      # -------------------------
+
+      - name: avg_days_to_close
+        description: Average time taken to close a deal.
+        agg: average
+        expr: days_to_close
+
+# =====================================================
+# 4. CUSTOMER SUMMARY SEMANTIC MODEL
+# Grain: One row per customer
+# =====================================================
+
+  - name: customer_summary
+    description: Customer-level aggregated behavioral and revenue metrics.
+
+    model: ref('mart_customer')
+
+    defaults:
+      agg_time_dimension: first_order_date
+
+    entities:
+
+      - name: customer
+        type: primary
+        expr: customer_id
+
+    dimensions:
+
+      # -------------------------
+      # Time Dimensions
+      # -------------------------
+
+      - name: first_order_date
+        type: time
+        expr: first_order_date
+
+        type_params:
+          time_granularity: day
+
+      - name: last_order_date
+        type: time
+        expr: last_order_date
+
+        type_params:
+          time_granularity: day
+
+      # -------------------------
+      # Geographic Dimensions
+      # -------------------------
+
+      - name: customer_city
+        type: categorical
+
+      - name: customer_state
+        type: categorical
+
+      - name: customer_zip_code
+        type: categorical
+
+      # -------------------------
+      # Behavioral Dimensions
+      # -------------------------
+
+      - name: is_repeat_customer
+        type: categorical
+
+    measures:
+
+      # -------------------------
+      # Revenue Measures
+      # -------------------------
+
+      - name: customer_total_revenue
+        description: Total revenue generated by customers.
+        agg: sum
+        expr: total_revenue
+
+      - name: customer_avg_order_value
+        description: Average order value per customer.
+        agg: average
+        expr: avg_order_value
+
+      # -------------------------
+      # Order Measures
+      # -------------------------
+
+      - name: customer_total_orders
+        description: Total number of orders placed by customers.
+        agg: sum
+        expr: total_orders
+
+      - name: customer_total_items
+        description: Total items purchased by customers.
+        agg: sum
+        expr: total_items_purchased
+
+      # -------------------------
+      # Customer Lifecycle Measures
+      # -------------------------
+
+      - name: avg_customer_lifetime_days
+        description: Average customer lifespan in days.
+        agg: average
+        expr: customer_lifetime_days
+
+      # -------------------------
+      # Repeat Customer Measures
+      # -------------------------
+
+      - name: repeat_customers
+        description: Count of repeat customers.
+        agg: sum
+        expr: case when is_repeat_customer then 1 else 0 end
+
+      - name: customer_count
+        description: Count of distinct customers.
+        agg: count_distinct
+        expr: customer_id
+
+  # =====================================================
+  # 5. CUSTOMER COHORTS SEMANTIC MODEL
+  # Grain: One row per cohort-month combination
+  # =====================================================
+
+  - name: customer_cohorts
+    description: Cohort-based customer retention and revenue analysis.
+
+    model: ref('customer_cohorts')
+
+    defaults:
+      agg_time_dimension: cohort_month
+
+    entities:
+
+      # Composite cohort entity
+      - name: cohort
+        type: primary
+        expr: cohort_month
+
+    dimensions:
+
+      # -------------------------
+      # Time Dimensions
+      # -------------------------
+
+      - name: cohort_month
+        description: Customer acquisition cohort month.
+        type: time
+        expr: cohort_month
+
+        type_params:
+          time_granularity: month
+
+      - name: order_month
+        description: Month in which customer activity occurred.
+        type: time
+        expr: order_month
+
+        type_params:
+          time_granularity: month
+
+      # -------------------------
+      # Cohort Progression
+      # -------------------------
+
+      - name: months_since_first_order
+        description: Number of months since customer first purchase.
+        type: categorical
+
+    measures:
+
+      # -------------------------
+      # Customer Retention Measures
+      # -------------------------
+
+      - name: cohort_customers
+        description: Total active customers within a cohort period.
+        agg: sum
+        expr: customers
+
+      # -------------------------
+      # Revenue Measures
+      # -------------------------
+
+      - name: cohort_revenue
+        description: Revenue generated by customers within a cohort period.
+        agg: sum
+        expr: revenue
+
+  # =====================================================
+# 6. CUSTOMER RFM SCORES SEMANTIC MODEL
+# Grain: One row per customer (RFM snapshot)
+# =====================================================
+
+  - name: customer_rfm_scores
+    description: Customer RFM segmentation model based on order behavior.
+
+    model: ref('customer_rfm_scores')
+
+    defaults:
+      agg_time_dimension: snapshot_date
+
+    entities:
+
+      - name: customer
+        type: primary
+        expr: customer_id
+
+    dimensions:
+
+      - name: snapshot_date
+        type: time
+        expr: snapshot_date
+
+        type_params:
+          time_granularity: day
+
+      # -------------------------
+      # Behavioral Dimensions
+      # -------------------------
+
+      - name: recency_days
+        description: Days since last purchase relative to snapshot date.
+        type: categorical
+        expr: recency_days
+
+      - name: customer_segment
+        description: RFM-based customer segment classification.
+        type: categorical
+
+    measures:
+
+      # -------------------------
+      # RFM Core Measures
+      # -------------------------
+
+      - name: frequency
+        description: Number of orders per customer.
+        agg: sum
+        expr: frequency
+
+      - name: monetary
+        description: Total revenue generated by customer.
+        agg: sum
+        expr: monetary
+
+      - name: recency
+        description: Recency in days since last purchase.
+        agg: average
+        expr: recency_days
+
+      # -------------------------
+      # Derived / Scoring Measures
+      # -------------------------
+
+      - name: avg_customer_lifespan
+        description: Average customer lifespan in days.
+        agg: average
+        expr: customer_lifespan_days
+
+      - name: avg_order_value
+        description: Average order value per customer.
+        agg: average
+        expr: avg_order_value
+
+models:
+  - name: time_spine_daily
+    description: Daily time spine table for MetricFlow semantic layer.
+
+    time_spine:
+
+      standard_granularity_column: date_day
+
+    columns:
+
+      - name: date_day
+        description: Continuous sequence of calendar dates.
+
+        granularity: day

@@ -13,6 +13,7 @@ models:
         description: "Primary key for the order fact table."
         tests:
           - not_null
+          - unique
       - name: customer_id
         description: "Foreign key referencing dim_customer."
         tests:
@@ -32,18 +33,18 @@ models:
         description: "Date the customer received the package."
       - name: order_estimated_delivery_date
         description: "Estimated delivery date."
-      - name: total_order_value
-        description: "Total value of the order including items paid."
       - name: total_items
         description: "Count of items in the order."
-      - name: payment_type
-        description: "Payment method used."
-      - name: payment_installments
-        description: "Number of installments used."
-      - name: payment_value
+      - name: total_sellers
+        description: "Total number of sellers"
+      - name: total_products
+        description: "Total number of product sold"
+      - name: total_payment_records
+        description: "Total number of payment recorded"
+      - name: total_payment_value
         description: "Total amount to be paid."
-        tests:
-          - not_null
+      - name: total_order_value
+        description: "Total value of the order including items paid."
 
 
   - name: fct_order_items

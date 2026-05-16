@@ -4,39 +4,52 @@
 ) }}
 
 with base_orders as (
+
     select
         o.order_id,
         o.customer_id,
-        oi.seller_id,
-        o.order_purchase_timestamp as purchased_date,
-        o.order_approved_at as approved_date,
-        o.order_delivered_to_carrier_date as delivered_carrier_date,
-        o.order_delivered_customer_date as delivered_customer_date,
-        o.order_estimated_delivery_date as estimated_delivery_date,
-        o.order_status as order_status,
-        sum(payment_value) as total_order_value,
-        count(oi.order_item_id) as total_items,
-        date_diff(order_delivered_customer_date, order_purchase_timestamp, day) as delivery_days,
-        date_diff(order_estimated_delivery_date, order_purchase_timestamp, day) as estimated_delivery_days,
-        case 
-            when order_delivered_customer_date <= order_estimated_delivery_date then true 
-            else false 
-        end as is_delivered_on_time,
-        case
-            when order_delivered_customer_date > order_estimated_delivery_date then true
-            else false
-        end as is_delayed,
-        payment_type,
-        cast(avg(o.no_of_installments) as int) as payment_installments,
+        o.order_purchase_timestamp,
+        date(o.order_purchase_timestamp) as purchase_date,
+
+        o.order_status,
+
+        o.total_items,
+        o.total_order_value,
+
+        o.delivery_days,
+
+        o.estimated_delivery_days,
+
+        o.is_delivered_on_time,
+
+        o.is_delayed
+
     from {{ ref('fct_orders') }} o
-    left join {{ ref('fct_order_items') }} oi
-        on o.order_id = oi.order_id
+
     where o.order_status = 'delivered'
-    group by o.order_id, o.customer_id, oi.seller_id, 
-             o.order_purchase_timestamp, o.order_approved_at, 
-             o.order_delivered_to_carrier_date, o.order_delivered_customer_date,
-             o.order_estimated_delivery_date, o.order_status, payment_type
+
+),
+
+final as (
+
+    select
+        bo.*,
+
+        dd.day,
+        dd.day_of_week,
+        dd.day_name,
+        dd.is_weekend,
+        dd.week_number,
+        dd.month,
+        dd.month_name,
+        dd.quarter,
+        dd.year
+
+    from base_orders bo
+    left join {{ ref('dim_date') }} dd
+        on bo.purchase_date = dd.date_day
+
 )
 
-select * 
-from base_orders
+select *
+from final

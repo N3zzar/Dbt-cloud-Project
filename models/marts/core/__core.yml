@@ -57,68 +57,7 @@ models:
         owner: "data-analytics"
         domain: "customer"
         tags: ["mart", "customer"]
-  - name: mart_payment
-    description: "Aggregated sales data by payment type, including order, customer, product, and seller information."
-    columns:
-      - name: order_id
-        description: "Primary key of the order."
-        tests:
-          - not_null
-          - unique
-          - relationships:
-              arguments:
-                to: ref('fact_orders')
-                field: order_id
-      - name: customer_id
-        description: "Identifier of the customer who placed the order."
-        tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('dim_customer')
-                field: customer_id
-      - name: payment_type
-        description: "Type of payment used (e.g., credit card, boleto, voucher)."
-        tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values: ["credit_card", "boleto", "voucher", "debit_card", "not_defined"]
 
-      - name: payment_installments
-        description: "Number of installments chosen for the payment."
-
-      - name: payment_value
-        description: "Total value of the payment for the order."
-        tests:
-          - not_null
-
-      - name: product_id
-        description: "Identifier of the product associated with the order item."
-        tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('dim_product')
-                field: product_id
-      - name: product_category_name_english
-        description: "English name of the product category."
-
-      - name: seller_id
-        description: "Identifier of the seller fulfilling the order item."
-        tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('dim_seller')
-                field: seller_id
-      - name: seller_state
-        description: "State in which the seller operates."
-    config:
-      meta:
-        owner: "data-analytics"
-        domain: "sales"
-        tags: ["mart", "payments"]
   - name: mart_sales
     description: "Order-level sales fact table with aggregated metrics including delivery performance, payment details, and order counts."
     columns:
@@ -139,28 +78,9 @@ models:
               arguments:
                 to: ref('dim_customer')
                 field: customer_id
-      - name: seller_id
-        description: "Foreign key referencing dim_seller."
-        tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('dim_seller')
-                field: seller_id
-      - name: purchased_date
-        description: "Date when the order was purchased."
 
-      - name: approved_date
-        description: "Date when the order payment was approved."
-
-      - name: delivered_carrier_date
-        description: "Date when the order was handed to the carrier."
-
-      - name: delivered_customer_date
-        description: "Date when the order was delivered to the customer."
-
-      - name: estimated_delivery_date
-        description: "Estimated delivery date provided at purchase."
+      - name: order_purchase_timestamp
+        description: "Timestamp when the order was purchased."
 
       - name: order_status
         description: "Status of the order (e.g., approved, delivered, canceled)."
@@ -191,13 +111,6 @@ models:
       - name: is_delayed
         description: "Boolean indicating if the order was delivered after the estimated delivery date."
 
-      - name: payment_type
-        description: "Type of payment used for the order."
-        tests:
-          - not_null
-
-      - name: payment_installments
-        description: "Average number of installments selected for this order."
     config:
       meta:
         owner: "data-analytics"

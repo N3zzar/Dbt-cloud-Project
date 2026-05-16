@@ -1,33 +1,60 @@
 {{ config(materialized="table", tags=["mart", "customer"]) }}
 
-with 
-    orders_agg as (
-        select
-            o.customer_id,
-            min(o.order_purchase_timestamp) as first_order_date,
-            max(o.order_purchase_timestamp) as last_order_date,
-            count(o.order_id) as total_orders,
-            count(oi.order_item_id) as total_items_purchased,
-            sum(payment_value) as total_revenue
-        from {{ ref("fct_orders") }} o
-        left join {{ ref('fct_order_items') }} oi
-        on o.order_id = oi.order_id
-        where o.order_status = 'delivered'
-        group by o.customer_id
-    ),
+with orders_agg as (
 
-    customer_details as (
-        select
-            c.customer_id,
-            c.customer_city,
-            c.customer_state,
-            c.customer_zip_code
-        from {{ ref("dim_customer") }} c
-    )
+    select
+        customer_id,
+        date(min(order_purchase_timestamp)) as first_order_date,
+        date(max(order_purchase_timestamp)) as last_order_date,
+        sum(total_items) as total_items_purchased,
+        count(distinct order_id) as total_orders,
+        sum(total_order_value) as total_revenue
+
+    from {{ ref("fct_orders") }}
+
+    where order_status = 'delivered'
+
+    group by 1
+
+),
+
+customer_details as (
+
+    select
+        customer_id,
+        customer_city,
+        customer_state,
+        customer_zip_code
+
+    from {{ ref("dim_customer") }}
+
+)
 
 select
-    *,
-    date_diff(DATE(last_order_date), DATE(oa.first_order_date), day) as customer_lifetime_days,
-    case when oa.total_orders > 1 then true else false end as is_repeat_customer,
-    total_revenue / nullif(total_orders,0) as avg_order_value
+    oa.customer_id,
+    cd.customer_city,
+    cd.customer_state,
+    cd.customer_zip_code,
+
+    oa.first_order_date,
+    oa.last_order_date,
+    oa.total_items_purchased,
+    oa.total_orders,
+    oa.total_revenue,
+
+    date_diff(
+        date(oa.last_order_date),
+        date(oa.first_order_date),
+        day
+    ) as customer_lifetime_days,
+
+    case
+        when oa.total_orders > 1 then true
+        else false
+    end as is_repeat_customer,
+
+    oa.total_revenue / nullif(oa.total_orders, 0) as avg_order_value
+
 from orders_agg oa
+left join customer_details cd
+    on oa.customer_id = cd.customer_id

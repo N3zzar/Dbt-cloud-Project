@@ -30,6 +30,7 @@ models:
 
   - name: dim_date
     description: "Date dimension table used for time-based analysis."
+
     columns:
       - name: date_day
         description: "Calendar date."

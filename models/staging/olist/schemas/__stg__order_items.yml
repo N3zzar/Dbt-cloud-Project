@@ -9,7 +9,6 @@ models:
         description: "Foreign key linking items to an order."
         tests:
           - not_null
-          - unique
           - relationships:
               arguments:
                 to: ref('stg_orders')
