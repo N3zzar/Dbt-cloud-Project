@@ -159,6 +159,8 @@ metrics:
   # -------------------------
 
   - name: total_orders
+    label: total orders
+    description: number of orders
     type: simple
 
     type_params:
