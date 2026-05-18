@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 WITH boundary AS (
     SELECT
         MIN(order_purchase_timestamp) AS start_date,
@@ -31,4 +29,4 @@ SELECT
     EXTRACT(YEAR FROM day) AS year,
     DATE_TRUNC(day, YEAR) AS year_start_date
 FROM date_spine
-ORDER BY day
+ORDER BY date_day

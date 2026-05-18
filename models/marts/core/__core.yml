@@ -79,6 +79,15 @@ models:
                 to: ref('dim_customer')
                 field: customer_id
 
+      - name: customer_city
+        description: "City name"
+
+      - name: customer_state
+        description: "State of the customer"
+
+      - name: customer_state_abbrev
+        description: "The full state name"
+
       - name: order_purchase_timestamp
         description: "Timestamp when the order was purchased."
 

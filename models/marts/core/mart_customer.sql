@@ -1,4 +1,36 @@
-{{ config(materialized="table", tags=["mart", "customer"]) }}
+-- mart_customer.sql
+-- Grain:
+--   One row per customer.
+--
+-- Purpose:
+--   Customer-level analytics mart used for customer
+--   lifecycle analysis, repeat purchase behavior,
+--   revenue contribution, and geographic reporting.
+--
+-- Important:
+--   Metrics in this model only consider delivered orders.
+--
+--   total_revenue represents cumulative customer spend
+--   across delivered orders.
+--
+--   avg_order_value is calculated using delivered orders only.
+--
+--   customer_lifetime_days measures the duration between
+--   first and most recent delivered purchase.
+--
+-- Not Yet Included:
+--   - Customer churn prediction
+--   - Customer acquisition cost
+--   - Customer profitability metrics
+--   - Customer support interactions
+--
+-- Downstream Consumers:
+--   - Semantic Layer (customer_summary)
+--   - Customer dashboards
+--   - Executive reporting
+
+
+{{ config(materialized="table", tags=["mart", "core", "customer"]) }}
 
 with orders_agg as (
 

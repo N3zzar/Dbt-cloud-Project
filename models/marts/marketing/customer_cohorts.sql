@@ -1,3 +1,37 @@
+-- customer_cohorts.sql
+-- Grain:
+--   One row per cohort_month x order_month combination.
+--
+-- Purpose:
+--   Cohort retention and lifecycle analysis model.
+--   Tracks how customer groups acquired in the same month
+--   generate revenue and remain active over time.
+--
+-- Important:
+--   cohort_month represents the month of a customer's
+--   first delivered order.
+--
+--   months_since_first_order measures elapsed months
+--   between acquisition and subsequent activity.
+--
+--   Revenue calculations currently use delivered orders only.
+--
+--   Current model does NOT yet store original cohort size,
+--   therefore retention_rate calculations in the semantic layer
+--   are approximations rather than strict cohort retention metrics.
+--
+-- Not Yet Included:
+--   - Original cohort size tracking
+--   - Rolling retention calculations
+--   - Cohort lifetime value analysis
+--   - Reactivation analysis
+--
+-- Downstream Consumers:
+--   - Retention dashboards
+--   - Cohort heatmaps
+--   - Semantic Layer (customer_cohorts)
+
+
 {{ config(
     materialized='table',
     tags=['mart','marketing']
