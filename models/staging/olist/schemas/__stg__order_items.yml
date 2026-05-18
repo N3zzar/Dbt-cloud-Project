@@ -11,7 +11,7 @@ models:
           - not_null
           - relationships:
               arguments:
-                to: ref('stg_orders')
+                to: ref('stg__orders')
                 field: 'order_id'
 
 

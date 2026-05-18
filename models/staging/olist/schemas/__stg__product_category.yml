@@ -18,7 +18,7 @@ models:
           - unique
           - relationships:
               arguments:
-                to: ref('stg_products')
+                to: ref('stg__product')
                 field: product_category_name
 
       - name: product_category_name_english
