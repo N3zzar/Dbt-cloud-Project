@@ -56,3 +56,4 @@ seeds:
 
 flags:
   require_generic_test_arguments_property: true
+  bigquery_use_batch_source_freshness: true
