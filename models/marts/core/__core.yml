@@ -68,7 +68,7 @@ models:
           - unique
           - relationships:
               arguments:
-                to: ref('fact_orders')
+                to: ref('fct_orders')
                 field: order_id
       - name: customer_id
         description: "Foreign key referencing dim_customer."

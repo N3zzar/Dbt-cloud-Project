@@ -55,7 +55,7 @@ models:
           - unique
           - relationships:
               arguments:
-                to: ref('dim_customers')
+                to: ref('dim_customer')
                 field: customer_id
 
       - name: recency_days
