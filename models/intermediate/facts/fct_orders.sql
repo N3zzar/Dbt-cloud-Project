@@ -1,9 +1,41 @@
 -- fct_orders.sql
--- Grain: One row per order_id
--- Path: Olist
--- Purpose: 
+-- Grain:
+--   One row per order.
 
--- Powers Downstream
+-- Purpose:
+--   Central transactional fact table for order-level analytics.
+--   Provides the primary source for revenue, fulfillment,
+--   customer behavior, and operational reporting.
+--
+-- Important:
+--   total_order_value includes both item price and freight value.
+--
+--   total_payment_value originates from payment records and may differ
+--   slightly from total_order_value due to installments, adjustments,
+--   or payment processing behavior.
+--
+--   Many business KPIs should only consider delivered orders.
+--   Prefer semantic-layer metrics such as delivered_revenue
+--   instead of repeatedly filtering order_status = 'delivered'
+--   in downstream BI tools.
+--
+--   delivery_delay_days measures lateness relative to the
+--   estimated delivery date.
+--
+-- Not Yet Included:
+--   - Refund and cancellation adjustments
+--   - Net revenue calculations
+--   - Payment installment analytics
+--   - Shipping carrier performance metrics
+--
+-- Downstream Consumers:
+--   - mart_sales
+--   - mart_customer
+--   - mart_product_performance
+--   - customer_cohorts
+--   - customer_rfm_scores
+--   - Semantic Layer (orders)
+--   - Lightdash dashboards
 
 {{ config(
     materialized= 'table',

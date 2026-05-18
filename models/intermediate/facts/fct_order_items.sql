@@ -1,12 +1,36 @@
 -- fct_order_items.sql
--- Grain: one row per order item fact table
--- Path: 
--- Purpose: 
+-- Grain:
+--   One row per order item.
+--
+-- Purpose:
+--   Item-level transactional fact table used for
+--   product performance, revenue composition,
+--   seller analytics, and category analysis.
+--
+-- Important:
+--   total_item_value = price + freight_value.
+--
+--   Revenue metrics derived from this model represent
+--   gross merchandise value before refunds or adjustments.
+--
+--   Multiple order items can belong to the same order.
+--   Aggregating order-level dimensions directly from this model
+--   may lead to duplicated counts if not handled carefully.
+--
+-- Not Yet Included:
+--   - Refund-adjusted item revenue
+--   - Product margin calculations
+--   - Discount attribution
+--   - Inventory and stock metrics
+--
+-- Downstream Consumers:
+--   - mart_product_performance
+--   - Semantic Layer (order_items)
+--   - Product dashboards
+--   - Revenue dashboards
 
--- Powers Downstream
 
-
-{{ config(materialized="view", tags=["intermediate", "fact"], schema = "cleaned") }}
+{{ config(materialized="table", tags=["intermediate", "fact"], schema = "analytics") }}
 
 
 select 

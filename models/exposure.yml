@@ -13,6 +13,7 @@ exposures:
       - ref('customer_rfm_scores')
       - ref('fct_orders')
       - ref('fct_marketing')
+      - ref('fct_order_items')
 
     owner:
       name: "Nezzar Knowles"

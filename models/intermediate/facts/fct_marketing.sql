@@ -1,7 +1,36 @@
--- Grain: One row per converted MQL / Closed deals
+-- fct_marketing.sql
+-- Grain:
+--   One row per marketing-qualified lead associated
+--   with a closed deal.
+--
+-- Purpose:
+--   Marketing and sales conversion fact table used for
+--   acquisition channel analysis and sales-cycle reporting.
+--
+-- Important:
+--   This model currently represents only successfully
+--   closed deals and does NOT include unsuccessful leads.
+--
+--   As a result, this model should NOT yet be interpreted
+--   as a complete marketing funnel representation.
+--
+--   days_to_close measures the duration between
+--   first contact and closed deal date.
+--
+-- Not Yet Included:
+--   - Full funnel stage progression
+--   - Lost or abandoned leads
+--   - Marketing spend attribution
+--   - Channel conversion efficiency
+--
+-- Downstream Consumers:
+--   - Semantic Layer (marketing)
+--   - Marketing dashboards
+--   - Funnel velocity reporting
+
 
 {{ config(
-    materialized='table',
+    materialized="table",
     tags=['intermediate', 'dimension'],
     schema = "analytics"
 ) }}

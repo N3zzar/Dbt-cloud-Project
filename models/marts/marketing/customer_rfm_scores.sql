@@ -1,3 +1,40 @@
+-- customer_rfm_scores.sql
+-- Grain:
+--   One row per customer.
+--
+-- Purpose:
+--   Behavioral customer segmentation model based on
+--   Recency, Frequency, and Monetary (RFM) analysis.
+--
+-- Important:
+--   frequency represents the number of delivered orders
+--   placed by a customer.
+--
+--   monetary represents cumulative revenue generated
+--   from delivered orders.
+--
+--   recency_days measures the number of days since
+--   a customer's last purchase relative to the
+--   defined snapshot date.
+--
+--   RFM scores are relative rankings and should be interpreted
+--   comparatively rather than as absolute business thresholds.
+--
+-- Not Yet Included:
+--   - Dynamic scoring thresholds
+--   - Predictive churn scoring
+--   - Customer propensity modeling
+--   - Multi-period behavioral tracking
+--
+-- Downstream Consumers:
+--   - Semantic Layer (customer_rfm_scores)
+--   - Customer segmentation dashboards
+--   - Retention analysis
+
+
+
+
+
 {{ config(
     materialized='table',
     tags=['mart','marketing']
