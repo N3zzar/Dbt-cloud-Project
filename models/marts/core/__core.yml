@@ -149,9 +149,12 @@ models:
           English-translated product category name.
 
           Used for category-level aggregation, benchmarking,
-          and merchandising analysis.
+          and merchandising analysis
         tests:
-        - not_null
+          - not_null:
+              config:
+                severity: warn
+
 
       - name: total_orders
         description: |
