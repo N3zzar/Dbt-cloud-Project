@@ -45,6 +45,24 @@ models:
         description: "Total amount to be paid."
       - name: total_order_value
         description: "Total value of the order including items paid."
+      
+      - name: delivery_delay_days
+        description: "Difference in days between the estimated delivery date and the actual delivery date."
+
+      - name: delivery_days
+        description: "Number of days between order purchase and customer delivery."
+
+      - name: estimated_delivery_days
+        description: "Number of days between order purchase and the estimated delivery date."
+
+      - name: is_delivered_on_time
+        description: "Indicates whether the order was delivered on or before the estimated delivery date."
+
+      - name: is_delayed
+        description: "Indicates whether the order was delivered after the estimated delivery date."
+
+      - name: order_size_bucket
+        description: "Categorization of the order based on the total number of items purchased."
 
     config:
       meta:
@@ -146,6 +164,17 @@ models:
         description: "Price of a single product item."
       - name: freight_value
         description: "Freight cost allocated to this item."
+      - name: product_category_name_english
+        description: "English-translated category name associated with the product."
+
+      - name: total_item_value
+        description: "Total value of the order item including product price and freight charges."
+
+      - name: order_status
+        description: "Status of the associated order."
+
+      - name: order_purchase_timestamp
+        description: "Timestamp when the associated order was placed."
 
     config:
       meta:
@@ -250,6 +279,8 @@ models:
         description: "Marketing segment assigned to the customer."
       - name: lead_category
         description: "Type of lead"
+      - name: days_to_close
+        description: "Number of days between first contact with the lead and the date the deal was won."
 
     config:
       meta:
