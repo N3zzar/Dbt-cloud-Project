@@ -58,5 +58,3 @@ count(*) filter (where is_closed_won)                      as closed_won_count,
         coalesce(sum(amount) filter (where is_closed_won), 0)
 
 
-
-

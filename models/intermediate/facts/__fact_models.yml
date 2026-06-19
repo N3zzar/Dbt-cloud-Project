@@ -52,7 +52,7 @@ models:
         domain: "fact"
         tags: ['intermediate', 'fact']
         metrics:
-          total_payment_value:
+          total_recorded_payment_value:
             label: Total Payment Value
             type: sum
             sql: total_payment_value

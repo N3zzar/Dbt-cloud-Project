@@ -437,7 +437,7 @@ models:
             sql: product_id
             description: Distinct products sold.
 
-          total_orders:
+          total_delivered_orders:
             label: Product Orders
             type: sum
             sql: total_orders
@@ -518,7 +518,7 @@ models:
           revenue_per_order:
             label: Revenue Per Order
             type: number
-            sql: ${total_product_revenue} / nullif(${total_orders},0)
+            sql: ${total_product_revenue} / nullif(${total_delivered_orders},0)
             format: '$#,##0.00'
             description: Average revenue generated per order.
 
