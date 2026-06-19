@@ -66,8 +66,8 @@ models:
             format: '$#,##0.00'
             description: Average payment value per order.
 
-          total_payment_records:
-            label: Total Payment Records
+          total_payment_record:
+            label: Total Payment Record
             type: sum
             sql: total_payment_records
             description: Total number of payment records associated with orders.

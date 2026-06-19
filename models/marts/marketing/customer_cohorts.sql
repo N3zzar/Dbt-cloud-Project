@@ -66,6 +66,18 @@ customer_cohorts as (
 
 ),
 
+cohort_sizes as (
+
+    select
+        cohort_month,
+        count(distinct customer_id) as cohort_size
+
+    from customer_cohorts
+
+    group by 1
+
+),
+
 customer_orders as (
 
     select

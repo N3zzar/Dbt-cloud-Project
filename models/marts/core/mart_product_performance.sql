@@ -43,7 +43,7 @@ select
     product_category_name_english,
 
     count(distinct order_id) as total_orders,
-    count(*) as total_items,
+    count(*) as units_sold,
 
     sum(price) as product_revenue,
 
@@ -55,7 +55,12 @@ select
 
     rank() over (
         order by sum(price + freight_value) desc
-    ) as revenue_rank
+    ) as revenue_rank,
+
+    dense_rank() over (
+        partition by product_category_name_english
+        order by sum(price + freight_value) desc
+    ) as category_rank
 
 from {{ ref('fct_order_items') }}
 
