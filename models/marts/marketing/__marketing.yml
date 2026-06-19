@@ -40,12 +40,46 @@ models:
       meta:
         owner: "data-marketing"
         domain: "marketing"
+        tags:
+          - mart
+          - marketing
+          - cohorts
+          - retention
+        metrics:
+          active_customers:
+            label: Active Customers
+            type: sum
+            sql: customers
 
-      tags:
-        - mart
-        - marketing
-        - cohorts
-        - retention
+          cohort_revenue:
+            label: Cohort Revenue
+            type: sum
+            sql: revenue
+            format: '$#,##0.00'
+
+          avg_revenue_per_customer:
+            label: Revenue Per Customer
+            type: number
+            sql: ${cohort_revenue} / nullif(${active_customers},0)
+            format: '$#,##0.00'
+
+          max_cohort_revenue:
+            label: Highest Cohort Revenue
+            type: max
+            sql: revenue
+            format: '$#,##0.00'
+
+          avg_months_since_acquisition:
+            label: Avg Months Since Acquisition
+            type: average
+            sql: months_since_first_order
+
+          retention_rate:
+            label: Retention Rate
+            type: average
+            sql: retention_rate
+            format: '0.0%'
+
 
   - name: customer_rfm_scores
     description: "Customer-level RFM segmentation model containing recency, frequency, monetary metrics, and behavioral segments."
@@ -112,12 +146,46 @@ models:
         description: "Average revenue generated per delivered order."
 
     config:
+      
       meta:
         owner: "data-marketing"
         domain: "marketing"
-
-      tags:
+        tags:
         - mart
         - marketing
         - rfm
         - customer_analytics
+        metrics:
+          active_customers:
+            label: Active Customers
+            type: sum
+            sql: customers
+
+          cohort_revenue:
+            label: Cohort Revenue
+            type: sum
+            sql: revenue
+            format: '$#,##0.00'
+
+          avg_revenue_per_customer:
+            label: Revenue Per Customer
+            type: number
+            sql: ${cohort_revenue} / nullif(${active_customers},0)
+            format: '$#,##0.00'
+
+          max_cohort_revenue:
+            label: Highest Cohort Revenue
+            type: max
+            sql: revenue
+            format: '$#,##0.00'
+
+          avg_months_since_acquisition:
+            label: Avg Months Since Acquisition
+            type: average
+            sql: months_since_first_order
+
+          retention_rate:
+            label: Retention Rate
+            type: average
+            sql: retention_rate
+            format: '0.0%'
