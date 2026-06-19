@@ -315,7 +315,7 @@ models:
               when ${TABLE}.is_delayed = true
               then 1
               end
-              description: Orders delivered after the promised date.
+            description: Orders delivered after the promised date.
 
           on_time_delivery_rate:
             label: On-Time Delivery Rate
