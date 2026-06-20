@@ -182,7 +182,7 @@ models:
         domain: "fact"
         tags: ["intermediate", "fact"]
         metrics:
-          total_item_value:
+          total_merch_value:
             label: Total Item Value
             type: sum
             sql: total_item_value
