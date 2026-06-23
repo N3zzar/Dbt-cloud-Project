@@ -14,6 +14,7 @@ semantic_models:
       agg_time_dimension: order_purchase_timestamp
 
     entities:
+
       - name: customer_order
         type: primary
         expr: order_id
@@ -31,13 +32,25 @@ semantic_models:
       - name: order_purchase_timestamp
         type: time
         expr: order_purchase_timestamp
-
         type_params:
           time_granularity: day
 
       - name: order_delivered_customer_date
         type: time
         expr: order_delivered_customer_date
+        type_params:
+          time_granularity: day
+
+      - name: order_approved_at
+        type: time
+        expr: order_approved_at
+
+        type_params:
+          time_granularity: day
+
+      - name: order_estimated_delivery_date
+        type: time
+        expr: order_estimated_delivery_date
 
         type_params:
           time_granularity: day
@@ -98,22 +111,39 @@ semantic_models:
         agg: sum
         expr: total_sellers
 
+      - name: delivered_orders
+        description: Count of delivered orders.
+        agg: sum
+        expr: case when order_status = 'delivered' then 1 else 0 end
+
       # -------------------------
       # Delivery Measures
       # -------------------------
 
+      - name: delivery_days
+        description: Total delivery days across orders.
+        agg: sum
+        expr: delivery_days
+
+      - name: estimated_delivery_days
+        description: Total estimated delivery days across orders.
+        agg: sum
+        expr: estimated_delivery_days
+
+      - name: delivery_delay_days
+        description: Total delivery delay days across orders.
+        agg: sum
+        expr: delivery_delay_days
+
       - name: avg_delivery_days
-        description: Average delivery duration.
         agg: average
         expr: delivery_days
 
       - name: avg_estimated_delivery_days
-        description: Average estimated delivery duration.
         agg: average
         expr: estimated_delivery_days
 
       - name: avg_delivery_delay_days
-        description: Average delivery delay duration.
         agg: average
         expr: delivery_delay_days
 
@@ -130,7 +160,6 @@ semantic_models:
         description: Count of orders delivered on time.
         agg: sum
         expr: case when is_delivered_on_time then 1 else 0 end
-
 
   # =====================================================
   # 2. ORDER ITEMS SEMANTIC MODEL
@@ -206,11 +235,6 @@ semantic_models:
       - name: units_sold
         description: Total order items sold.
         agg: count
-        expr: order_item_id
-
-      - name: order_item_count
-        description: Count of distinct order items.
-        agg: count_distinct
         expr: order_item_id
 
 
@@ -291,15 +315,15 @@ semantic_models:
       # Sales Cycle Measures
       # -------------------------
 
-      - name: avg_days_to_close
-        description: Average time taken to close a deal.
-        agg: average
+      - name: total_days_to_close
+        description: Total time taken to close a deal.
+        agg: sum
         expr: days_to_close
 
-# =====================================================
-# 4. CUSTOMER SUMMARY SEMANTIC MODEL
-# Grain: One row per customer
-# =====================================================
+  # =====================================================
+  # 4. CUSTOMER SUMMARY SEMANTIC MODEL
+  # Grain: One row per customer
+  # =====================================================
 
   - name: customer_summary
     description: Customer-level aggregated behavioral and revenue metrics.
@@ -366,11 +390,6 @@ semantic_models:
         agg: sum
         expr: total_revenue
 
-      - name: customer_avg_order_value
-        description: Average order value per customer.
-        agg: average
-        expr: avg_order_value
-
       # -------------------------
       # Order Measures
       # -------------------------
@@ -385,14 +404,9 @@ semantic_models:
         agg: sum
         expr: total_items_purchased
 
-      # -------------------------
-      # Customer Lifecycle Measures
-      # -------------------------
-
-      - name: avg_customer_lifetime_days
-        description: Average customer lifespan in days.
+      - name: customer_avg_order_value
         agg: average
-        expr: customer_lifetime_days
+        expr: avg_order_value
 
       # -------------------------
       # Repeat Customer Measures
@@ -403,10 +417,15 @@ semantic_models:
         agg: sum
         expr: case when is_repeat_customer then 1 else 0 end
 
+      - name: avg_customer_lifespan
+        agg: average
+        expr: customer_lifetime_days
+
       - name: customer_count
         description: Count of distinct customers.
         agg: count_distinct
         expr: customer_id
+
 
   # =====================================================
   # 5. CUSTOMER COHORTS SEMANTIC MODEL
@@ -457,6 +476,7 @@ semantic_models:
       - name: months_since_first_order
         description: Number of months since customer first purchase.
         type: categorical
+        expr: cast(months_since_first_order as string)
 
     measures:
 
@@ -469,6 +489,16 @@ semantic_models:
         agg: sum
         expr: customers
 
+      - name: cohort_size
+        description: Original size of acquisition cohort.
+        agg: max
+        expr: cohort_size
+
+      - name: retention_rate
+        description: Cohort retention percentage.
+        agg: average
+        expr: retention_rate
+
       # -------------------------
       # Revenue Measures
       # -------------------------
@@ -479,9 +509,9 @@ semantic_models:
         expr: revenue
 
   # =====================================================
-# 6. CUSTOMER RFM SCORES SEMANTIC MODEL
-# Grain: One row per customer (RFM snapshot)
-# =====================================================
+  # 6. CUSTOMER RFM SCORES SEMANTIC MODEL
+  # Grain: One row per customer (RFM snapshot)
+  # =====================================================
 
   - name: customer_rfm_scores
     description: Customer RFM segmentation model based on order behavior.
@@ -510,13 +540,30 @@ semantic_models:
       # Behavioral Dimensions
       # -------------------------
 
-      - name: recency_days
-        description: Days since last purchase relative to snapshot date.
+      - name: recency_bucket
         type: categorical
-        expr: recency_days
+        expr: |
+          case
+            when recency_days <= 500 then '0-500'
+            when recency_days <= 1000 then '500-1000'
+            when recency_days <= 1500 then '1000-1500'
+            else '1500+'
+          end
 
       - name: customer_segment
         description: RFM-based customer segment classification.
+        type: categorical
+
+      - name: recency_score
+        type: categorical
+
+      - name: frequency_score
+        type: categorical
+
+      - name: monetary_score
+        type: categorical
+
+      - name: rfm_score
         type: categorical
 
     measures:
@@ -544,22 +591,17 @@ semantic_models:
       # Derived / Scoring Measures
       # -------------------------
 
-      - name: avg_customer_lifespan
-        description: Average customer lifespan in days.
-        agg: average
-        expr: customer_lifespan_days
-
       - name: avg_order_value
         description: Average order value per customer.
         agg: average
         expr: avg_order_value
 
 models:
+
   - name: time_spine_daily
     description: Daily time spine table for MetricFlow semantic layer.
 
     time_spine:
-
       standard_granularity_column: date_day
 
     columns:

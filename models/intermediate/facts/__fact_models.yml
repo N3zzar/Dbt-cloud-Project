@@ -45,7 +45,93 @@ models:
         description: "Total amount to be paid."
       - name: total_order_value
         description: "Total value of the order including items paid."
+      
+      - name: delivery_delay_days
+        description: "Difference in days between the estimated delivery date and the actual delivery date."
 
+      - name: delivery_days
+        description: "Number of days between order purchase and customer delivery."
+
+      - name: estimated_delivery_days
+        description: "Number of days between order purchase and the estimated delivery date."
+
+      - name: is_delivered_on_time
+        description: "Indicates whether the order was delivered on or before the estimated delivery date."
+
+      - name: is_delayed
+        description: "Indicates whether the order was delivered after the estimated delivery date."
+
+      - name: order_size_bucket
+        description: "Categorization of the order based on the total number of items purchased."
+
+    config:
+      meta:
+        owner: "intermediate"
+        domain: "fact"
+        tags: ['intermediate', 'fact']
+        metrics:
+          total_recorded_payment_value:
+            label: Total Payment Value
+            type: sum
+            sql: total_payment_value
+            format: '$#,##0.00'
+            description: Total value recorded in payment transactions.
+
+          average_payment_value:
+            label: Average Payment Value
+            type: average
+            sql: total_payment_value
+            format: '$#,##0.00'
+            description: Average payment value per order.
+
+          total_payment_record:
+            label: Total Payment Record
+            type: sum
+            sql: total_payment_records
+            description: Total number of payment records associated with orders.
+
+          average_payment_records:
+            label: Average Payment Records Per Order
+            type: average
+            sql: total_payment_records
+            description: Average number of payment records per order.
+
+          average_products_per_order:
+            label: Average Products Per Order
+            type: average
+            sql: total_products
+            description: Average number of distinct products included in an order.
+
+          average_sellers_per_order:
+            label: Average Sellers Per Order
+            type: average
+            sql: total_sellers
+            description: Average number of sellers participating in an order.
+
+          average_delivery_delay_days:
+            label: Average Delivery Delay Days
+            type: average
+            sql: delivery_delay_days
+            description: Average difference between estimated and actual delivery date.
+
+          maximum_delivery_delay_days:
+            label: Maximum Delivery Delay Days
+            type: max
+            sql: delivery_delay_days
+            description: Longest delivery delay observed.
+
+          minimum_delivery_delay_days:
+            label: Earliest Delivery (Days Ahead)
+            type: min
+            sql: delivery_delay_days
+            description: Earliest delivery relative to estimated date.
+
+          largest_payment_value:
+            label: Largest Payment Value
+            type: max
+            sql: total_payment_value
+            format: '$#,##0.00'
+            description: Highest payment amount recorded for a single order.
 
   - name: fct_order_items
     description: "Fact table containing item-level detail for each order."
@@ -78,6 +164,93 @@ models:
         description: "Price of a single product item."
       - name: freight_value
         description: "Freight cost allocated to this item."
+      - name: product_category_name_english
+        description: "English-translated category name associated with the product."
+
+      - name: total_item_value
+        description: "Total value of the order item including product price and freight charges."
+
+      - name: order_status
+        description: "Status of the associated order."
+
+      - name: order_purchase_timestamp
+        description: "Timestamp when the associated order was placed."
+
+    config:
+      meta:
+        owner: "intermediate"
+        domain: "fact"
+        tags: ["intermediate", "fact"]
+        metrics:
+          total_merch_value:
+            label: Total Item Value
+            type: sum
+            sql: total_item_value
+            format: '$#,##0.00'
+            description: Total gross merchandise value including freight.
+
+          average_item_value:
+            label: Average Item Value
+            type: average
+            sql: total_item_value
+            format: '$#,##0.00'
+            description: Average value of an order item including freight.
+
+          total_freight_value:
+            label: Total Freight Value
+            type: sum
+            sql: freight_value
+            format: '$#,##0.00'
+            description: Total freight charges across all order items.
+
+          average_freight_value:
+            label: Average Freight Value
+            type: average
+            sql: freight_value
+            format: '$#,##0.00'
+            description: Average freight charge per order item.
+
+          total_product_price:
+            label: Total Product Price
+            type: sum
+            sql: price
+            format: '$#,##0.00'
+            description: Total product sales value excluding freight.
+
+          average_product_price:
+            label: Average Product Price
+            type: average
+            sql: price
+            format: '$#,##0.00'
+            description: Average selling price at the order-item level.
+
+          total_order_items:
+            label: Total Order Items
+            type: count
+            sql: order_item_id
+            description: Total number of order-item transactions.
+
+          distinct_products:
+            label: Distinct Products
+            type: count_distinct
+            sql: product_id
+            description: Number of unique products sold.
+
+          distinct_sellers:
+            label: Distinct Sellers
+            type: count_distinct
+            sql: seller_id
+            description: Number of unique sellers involved in transactions.
+
+          distinct_orders:
+            label: Distinct Orders
+            type: count_distinct
+            sql: order_id
+            description: Number of unique orders represented in the fact table.
+
+
+
+
 
   # ==========================
   # FACTS MARKETING
@@ -106,3 +279,53 @@ models:
         description: "Marketing segment assigned to the customer."
       - name: lead_category
         description: "Type of lead"
+      - name: days_to_close
+        description: "Number of days between first contact with the lead and the date the deal was won."
+
+    config:
+      meta:
+        owner: "intermediate"
+        domain: "fact"
+        tags: ["intermediate", "fact"]
+        metrics:
+          total_closed_deals:
+            label: Total Closed Deals
+            type: count_distinct
+            sql: mql_id
+            description: Total number of marketing-qualified leads that resulted in closed deals.
+
+          total_sellers:
+            label: Total Sellers
+            type: count_distinct
+            sql: seller_id
+            description: Number of unique sellers acquired through marketing efforts.
+
+          average_days_to_close:
+            label: Average Days to Close
+            type: average
+            sql: days_to_close
+            description: Average number of days between first contact and deal closure.
+
+          fastest_deal_close:
+            label: Fastest Deal Close
+            type: min
+            sql: days_to_close
+            description: Shortest observed sales cycle.
+
+          slowest_deal_close:
+            label: Slowest Deal Close
+            type: max
+            sql: days_to_close
+            description: Longest observed sales cycle.
+
+          median_days_to_close:
+            label: Median Days to Close
+            type: median
+            sql: days_to_close
+            description: Median number of days required to close a deal.
+
+          average_closed_deals_per_segment:
+            label: Average Closed Deals Per Segment
+            type: count_distinct
+            sql: mql_id
+            description: Used alongside business_segment dimensions to compare segment performance.

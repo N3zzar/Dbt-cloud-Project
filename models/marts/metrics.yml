@@ -1,8 +1,8 @@
 metrics:
 
-  # =====================================================
-  # REVENUE METRICS
-  # =====================================================
+# =====================================================
+# REVENUE METRICS
+# =====================================================
 
   # -----------------------------------------------------
   # Core Revenue KPIs
@@ -26,7 +26,6 @@ metrics:
     type_params:
       measure: total_order_revenue
 
-
   - name: delivered_revenue
     label: Delivered Revenue
 
@@ -47,7 +46,7 @@ metrics:
     filter: |
       {{ Dimension('customer_order__order_status') }} = 'delivered'
 
-
+    
   - name: product_revenue
     label: Product Revenue
 
@@ -62,7 +61,6 @@ metrics:
     type_params:
       measure:
         name: item_revenue
-
 
   - name: freight_revenue
     label: Freight Revenue
@@ -79,7 +77,6 @@ metrics:
       measure:
         name: freight_revenue
 
-
   - name: total_product_value
     label: Total Product Value
 
@@ -94,7 +91,6 @@ metrics:
     type_params:
       measure:
         name: total_item_value
-
 
   - name: total_payments_received
     label: Total Payments Received
@@ -111,7 +107,6 @@ metrics:
       measure:
         name: total_payment_value
 
-
   # -----------------------------------------------------
   # Revenue Efficiency Metrics
   # -----------------------------------------------------
@@ -123,7 +118,8 @@ metrics:
       Average revenue generated per delivered order.
 
       Calculated as:
-        delivered_revenue / total_orders
+
+        delivered_revenue / delivered_orders
 
       Commonly used to evaluate customer purchasing behavior,
       basket size trends, and monetization efficiency.
@@ -140,7 +136,6 @@ metrics:
         - name: total_orders
           alias: orders
 
-
   - name: revenue_per_item
     label: Revenue Per Item
 
@@ -148,6 +143,7 @@ metrics:
       Average transactional value generated per order item sold.
 
       Calculated as:
+
         total_product_value / units_sold
 
       Useful for product monetization and pricing analysis.
@@ -164,10 +160,9 @@ metrics:
         - name: units_sold
           alias: items
 
-
-  # =====================================================
-  # FULFILLMENT METRICS
-  # =====================================================
+# =====================================================
+# FULFILLMENT METRICS
+# =====================================================
 
   # -----------------------------------------------------
   # Delivery SLA Metrics
@@ -189,7 +184,6 @@ metrics:
       measure:
         name: avg_delivery_days
 
-
   - name: avg_estimated_delivery_time
     label: Average Estimated Delivery Time
 
@@ -205,23 +199,6 @@ metrics:
     type_params:
       measure:
         name: avg_estimated_delivery_days
-
-
-  - name: avg_delivery_delay_days
-    label: Average Delivery Delay Days
-
-    description: >
-      Average number of days orders were delivered
-      after the estimated delivery date.
-
-      Positive values indicate delayed fulfillment performance.
-
-    type: simple
-
-    type_params:
-      measure:
-        name: avg_delivery_delay_days
-
 
   # -----------------------------------------------------
   # Fulfillment Volume Metrics
@@ -242,7 +219,6 @@ metrics:
       measure:
         name: order_count
 
-
   - name: delayed_orders
     label: Delayed Orders
 
@@ -257,6 +233,19 @@ metrics:
     type_params:
       measure:
         name: delayed_orders
+
+  - name: delivered_orders
+    label: Delivered Orders
+
+    type: simple
+
+    type_params:
+      measure:
+        name: order_count
+
+    filter: |
+      {{ Dimension('customer_order__order_status') }} = 'delivered'
+
 
 
   - name: on_time_orders
@@ -273,7 +262,6 @@ metrics:
     type_params:
       measure:
         name: on_time_orders
-
 
   # -----------------------------------------------------
   # Fulfillment Ratio KPIs
@@ -295,7 +283,6 @@ metrics:
       numerator: delayed_orders
       denominator: total_orders
 
-
   - name: on_time_delivery_rate
     label: On-Time Delivery Rate
 
@@ -312,9 +299,9 @@ metrics:
       numerator: on_time_orders
       denominator: total_orders
 
-  # =====================================================
-  # CUSTOMER METRICS
-  # =====================================================
+# =====================================================
+# CUSTOMER METRICS
+# =====================================================
 
   # -----------------------------------------------------
   # Customer Volume Metrics
@@ -324,7 +311,7 @@ metrics:
     label: Total Customers
 
     description: >
-      Total distinct customers who have placed orders.
+      Distinct customers represented within the customer summary model.
 
       Serves as the foundational customer population metric
       for behavioral, retention, and lifecycle analysis.
@@ -334,7 +321,6 @@ metrics:
     type_params:
       measure:
         name: customer_count
-
 
   - name: repeat_customers
     label: Repeat Customers
@@ -351,13 +337,12 @@ metrics:
       measure:
         name: repeat_customers
 
-
   # -----------------------------------------------------
   # Customer Revenue Metrics
   # -----------------------------------------------------
 
-  - name: customer_lifetime_value
-    label: Customer Lifetime Value
+  - name: total_customer_revenue
+    label: total customer revenue
 
     description: >
       Total cumulative revenue generated by customers
@@ -371,7 +356,6 @@ metrics:
     type_params:
       measure:
         name: customer_total_revenue
-
 
   - name: customer_average_order_value
     label: Customer Average Order Value
@@ -388,48 +372,15 @@ metrics:
       measure:
         name: customer_avg_order_value
 
-
   # -----------------------------------------------------
   # Customer Behavioral Metrics
   # -----------------------------------------------------
-
-  - name: customer_frequency
-    label: Customer Frequency
-
-    description: >
-      Average number of delivered orders placed per customer.
-
-      Frequently used in behavioral segmentation
-      and RFM analysis.
-
-    type: simple
-
-    type_params:
-      measure:
-        name: frequency
-
-
-  - name: customer_monetary_value
-    label: Customer Monetary Value
-
-    description: >
-      Average cumulative monetary value generated per customer.
-
-      Represents customer contribution to total revenue
-      across delivered orders.
-
-    type: simple
-
-    type_params:
-      measure:
-        name: monetary
-
 
   - name: avg_customer_lifetime_days
     label: Average Customer Lifetime Days
 
     description: >
-      Average duration between a customer's first
+      Average duration between a customers first
       and most recent delivered purchase.
 
       Used as a high-level customer longevity indicator.
@@ -440,12 +391,43 @@ metrics:
       measure:
         name: avg_customer_lifespan
 
+  - name: average_recency_days
+    label: Average Recency Days
+
+    description: >
+      Average number of days since a customer
+      most recent purchase.
+
+      Lower values indicate more recently active customers.
+
+    type: simple
+
+    type_params:
+      measure:
+        name: recency
+
+  - name: average_customer_order_value_rfm
+    label: Average Customer Order Value (RFM)
+
+    description: >
+      Average order value calculated from the
+      customer RFM model.
+
+      Useful for customer segmentation and
+      behavioral analysis.
+
+    type: simple
+
+    type_params:
+      measure:
+        name: avg_order_value
+
 
   # -----------------------------------------------------
   # Customer Ratio KPIs
   # -----------------------------------------------------
-
   - name: repeat_customer_rate
+
     label: Repeat Customer Rate
 
     description: >
@@ -458,22 +440,25 @@ metrics:
     type: ratio
 
     type_params:
+
       numerator: repeat_customers
+
       denominator: total_customers
 
-
-  # =====================================================
-  # RETENTION METRICS
-  # =====================================================
+# =====================================================
+# RETENTION METRICS
+# =====================================================
 
   # -----------------------------------------------------
   # Cohort Activity Metrics
   # -----------------------------------------------------
 
   - name: cohort_active_customers
+
     label: Cohort Active Customers
 
     description: >
+
       Number of active customers within a cohort period.
 
       Used to analyze retention behavior
@@ -485,12 +470,12 @@ metrics:
       measure:
         name: cohort_customers
 
-
   # -----------------------------------------------------
   # Cohort Revenue Metrics
   # -----------------------------------------------------
 
   - name: cohort_revenue
+
     label: Cohort Revenue
 
     description: >
@@ -506,49 +491,35 @@ metrics:
       measure:
         name: cohort_revenue
 
-
   # -----------------------------------------------------
   # Retention Ratio Metrics
   # -----------------------------------------------------
 
   - name: retention_rate
+
     label: Retention Rate
 
     description: >
-      Approximate percentage of customers retained
-      across cohort periods.
+          Percentage of customers retained relative to the original cohort size.
 
-      Current implementation uses global customer totals
-      as the denominator and should not yet be interpreted
-      as a strict cohort retention calculation.
+          Calculated within the customer cohort model and used
+          to analyze retention performance over time.
 
-      Future versions should incorporate
-      original cohort size tracking.
-
-    type: derived
+    type: simple
 
     type_params:
+      measure: retention_rate
 
-      expr: active_customers / cohort_size
-
-      metrics:
-
-        - name: cohort_active_customers
-          alias: active_customers
-
-        - name: total_customers
-          alias: cohort_size
-
-
-  # =====================================================
-  # PRODUCT METRICS
-  # =====================================================
+# =====================================================
+# PRODUCT METRICS
+# ====================================================
 
   # -----------------------------------------------------
   # Product Sales Metrics
   # -----------------------------------------------------
 
   - name: units_sold
+
     label: Units Sold
 
     description: >
@@ -563,28 +534,12 @@ metrics:
       measure:
         name: units_sold
 
-
-  - name: total_order_items
-    label: Total Order Items
-
-    description: >
-      Total count of order item records.
-
-      Useful for operational analysis and
-      item-level transaction monitoring.
-
-    type: simple
-
-    type_params:
-      measure:
-        name: order_item_count
-
-
   # -----------------------------------------------------
   # Product Efficiency Metrics
   # -----------------------------------------------------
 
   - name: avg_product_price
+
     label: Average Product Price
 
     description: >
@@ -599,19 +554,17 @@ metrics:
     type: derived
 
     type_params:
-
       expr: revenue / items
 
       metrics:
-
         - name: product_revenue
           alias: revenue
 
         - name: units_sold
           alias: items
 
-
   - name: avg_freight_per_item
+
     label: Average Freight Per Item
 
     description: >
@@ -623,44 +576,36 @@ metrics:
     type: derived
 
     type_params:
-
       expr: freight / items
-
       metrics:
-
         - name: freight_revenue
           alias: freight
 
         - name: units_sold
           alias: items
 
-
-  # =====================================================
-  # MARKETING FUNNEL METRICS
-  # =====================================================
+# =====================================================
+# MARKETING FUNNEL METRICS
+# =====================================================
 
   # -----------------------------------------------------
   # Funnel Volume Metrics
   # -----------------------------------------------------
-
+        
   - name: total_closed_deals
     label: Total Closed Deals
-
     description: >
       Total successfully closed marketing-qualified deals.
 
       Represents finalized seller acquisition outcomes.
-
     type: simple
 
     type_params:
       measure:
         name: closed_deals
 
-
   - name: total_sellers
     label: Total Sellers
-
     description: >
       Total sellers associated with successfully closed deals.
 
@@ -673,35 +618,11 @@ metrics:
       measure:
         name: seller_count
 
-
-  # -----------------------------------------------------
-  # Funnel Velocity Metrics
-  # -----------------------------------------------------
-
-  - name: avg_sales_cycle_length
-    label: Average Sales Cycle Length
-
-    description: >
-      Average number of days required to convert
-      a marketing-qualified lead into a closed deal.
-
-      Used to evaluate sales efficiency
-      and funnel velocity performance.
-
-    type: simple
-
-    type_params:
-      measure:
-        name: avg_days_to_close
-
-
   # -----------------------------------------------------
   # Funnel Efficiency Metrics
   # -----------------------------------------------------
-
   - name: deals_per_seller
     label: Deals Per Seller
-
     description: >
       Average number of closed deals generated per seller.
 
@@ -711,13 +632,9 @@ metrics:
       Useful for evaluating sales acquisition efficiency.
 
     type: derived
-
     type_params:
-
       expr: deals / sellers
-
       metrics:
-
         - name: total_closed_deals
           alias: deals
 
