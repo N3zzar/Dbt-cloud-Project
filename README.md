@@ -236,7 +236,7 @@ The dbt DAG has been expanded to include semantic models and metric definitions 
 
 ### Executive Dashboard
 
-Insights included;
+Insights included:
 
 * Summary of key metrics, charts
 * Updated refresh time
