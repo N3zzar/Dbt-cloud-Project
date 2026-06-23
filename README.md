@@ -100,7 +100,7 @@ By defining metrics once and exposing them through semantic models, all downstre
 
 ![semantic-models.png](https://github.com/N3zzar/Dbt-cloud-Project/blob/c069e069cd592b152165d0d33dd4bc357f482e5a/images%20/%20Semantic%20Layer%20Implementation.jpg)
 
-![Metrics Configuration](metrics-config.png)
+![Metrics Configuration](images/Metrics.png)
 
 ---
 
@@ -137,7 +137,11 @@ Validation activities included:
 
 This process (which invovlved cross-checking important values in lightdash, dbt and bigquery) helped identify and correct calculation inconsistencies, resulting in more reliable business reporting.
 
-![Validation Process](analytics-validation.png)
+![bigqueryverification](images/total_revenue_verification_bigquery.png) 
+
+![dbtcloud verification](images/total_revenue_verification_dbtcloud.png)
+
+![Validation Process](images/total_revenue_verification.png)
 
 ---
 
@@ -168,7 +172,7 @@ All analytical models now have explicitly documented grains that are enforced th
 | `customer_cohort` | One row per cohort_month x order_month combination|
 | `customer_rfm_score` | One row per customer|
 
-![dbt Tests](dbt-tests.png)
+![dbt Tests](images/dbt_test.png)
 
 ---
 
@@ -216,7 +220,7 @@ Metrics Layer
 Lightdash Dashboards
 ```
 
-![Architecture Diagram](architecture-v2.png)
+![Architecture Diagram](images/Architecture.png)
 
 ---
 
@@ -224,11 +228,21 @@ Lightdash Dashboards
 
 The dbt DAG has been expanded to include semantic models and metric definitions alongside the traditional transformation layers.
 
-![Version 2 DAG](olist-v2-dag.png)
+![Version 2 DAG](images/Updated-Dag.png)
 
 ---
 
 ## Business Dashboards
+
+### Executive Dashboard
+
+Insights included;
+
+* Summary of key metrics, charts
+* Updated refresh time
+* Dashboard title
+
+![Executive Dashboard](images/Executive_dashboard.png)
 
 ### Revenue Performance Dashboard
 
@@ -238,19 +252,7 @@ Insights include:
 * Average order value
 * Revenue by states
 
-![Revenue Dashboard](revenue-dashboard.png)
-
----
-
-### Customer & Cohort Analytics Dashboard
-
-Insights include:
-
-* Customer revenue
-* Customer lifetime value
-* Customer by states
-
-![Customer Dashboard](customer-dashboard.png)
+![Revenue Dashboard](images/Revenue_Performance.png)
 
 ---
 
@@ -262,7 +264,7 @@ Insights include:
 * Closed deals by business segment
 * Total revenue by origin
 
-![Marketing Dashboard](marketing-dashboard.png)
+![Marketing Dashboard](images/Marketing_acquisition.png)
 
 ---
 
@@ -274,7 +276,7 @@ Insights include:
 * Revenue contribution by segment
 * RFM scores per customer
 
-![RFM Dashboard](rfm-dashboard.png)
+![RFM Dashboard](images/RFM.png)
 
 ---
 
@@ -353,7 +355,7 @@ Interactive documentation includes:
 
 ## Additional Links
 
-* Version 1 Repository
+* [Version 1 Repository](https://github.com/N3zzar/Dbt-cloud-Project-initialversion.git)
 * Thought Process Documentation https://github.com/N3zzar/Dbt-cloud-Project-initialversion/blob/e414e541fcac662f36fe9f7b35bdd1445c9a6ba7/thoughtprocess.md
 
 ---
