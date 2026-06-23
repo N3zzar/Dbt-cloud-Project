@@ -98,7 +98,7 @@ By defining metrics once and exposing them through semantic models, all downstre
 * Self-service analytics enablement
 * Version-controlled business logic
 
-![Semantic Models](semantic-models.png)
+![semantic-models.png](https://github.com/N3zzar/Dbt-cloud-Project/blob/c069e069cd592b152165d0d33dd4bc357f482e5a/images%20/%20Semantic%20Layer%20Implementation.jpg)
 
 ![Metrics Configuration](metrics-config.png)
 
@@ -108,17 +108,16 @@ By defining metrics once and exposing them through semantic models, all downstre
 
 Version 2 introduces a business intelligence layer through Lightdash.
 
-By consuming semantic models and governed metrics directly from dbt, dashboards inherit standardized business definitions and documentation automatically.
+By consuming semantic models and governed metrics directly from dbt metadata, dashboards in lighttdash inherit standardized business definitions and documentation automatically.
 
 Business domains covered include:
 
-* Revenue Performance
+* Sales Performance
 * Customer Analytics
-* Cohort Analysis
-* Marketing Performance
-* Seller Acquisition
+* Customer Retention & Cohorts Analysis
+* Marketing & Seller Acquisition
 * RFM Segmentation
-* Operational Performance
+* Product Performance
 
 ---
 
@@ -133,11 +132,10 @@ Validation activities included:
 * Revenue verification
 * Order count verification
 * Customer count verification
-* Delivery performance validation
 * Marketing funnel validation
 * Dashboard cross-checking
 
-This process helped identify and correct calculation inconsistencies, resulting in more reliable business reporting.
+This process (which invovlved cross-checking important values in lightdash, dbt and bigquery) helped identify and correct calculation inconsistencies, resulting in more reliable business reporting.
 
 ![Validation Process](analytics-validation.png)
 
@@ -161,11 +159,14 @@ All analytical models now have explicitly documented grains that are enforced th
 
 | Model              | Grain                  |
 | ------------------ | ---------------------- |
-| `fact_orders`      | One row per order      |
-| `fact_order_items` | One row per order item |
-| `dim_customer`     | One row per customer   |
-| `dim_product`      | One row per product    |
-| `dim_seller`       | One row per seller     |
+| `fct_orders`      | One row per order      |
+| `fct_order_items` | One row per order item |
+| `fct_marketing`   | One row per mql   |
+| `mart_customer`      | One row per customer    |
+| `mart_product_performance`       | One row per product|
+| `mart_sales` | One row per delivered order|
+| `customer_cohort` | One row per cohort_month x order_month combination|
+| `customer_rfm_score` | One row per customer|
 
 ![dbt Tests](dbt-tests.png)
 
@@ -189,7 +190,7 @@ Facts
 └── fact_marketing
 ```
 
-The model was reclassified to better reflect its event-based nature and analytical usage patterns, improving alignment with dimensional modeling best practices.
+The model was reclassified to better reflect its analytical usage patterns, improving alignment with dimensional modeling best practices.
 
 ---
 
@@ -234,9 +235,8 @@ The dbt DAG has been expanded to include semantic models and metric definitions 
 Insights include:
 
 * Revenue trends
-* Order volume
 * Average order value
-* Revenue by category
+* Revenue by states
 
 ![Revenue Dashboard](revenue-dashboard.png)
 
@@ -246,10 +246,9 @@ Insights include:
 
 Insights include:
 
-* Customer retention
-* Cohort performance
+* Customer revenue
 * Customer lifetime value
-* Repeat purchase behaviour
+* Customer by states
 
 ![Customer Dashboard](customer-dashboard.png)
 
@@ -259,9 +258,9 @@ Insights include:
 
 Insights include:
 
-* Lead funnel performance
-* Seller acquisition trends
-* Conversion metrics
+* Closed deals trend
+* Closed deals by business segment
+* Total revenue by origin
 
 ![Marketing Dashboard](marketing-dashboard.png)
 
@@ -273,7 +272,7 @@ Insights include:
 
 * Customer segments
 * Revenue contribution by segment
-* Customer value distribution
+* RFM scores per customer
 
 ![RFM Dashboard](rfm-dashboard.png)
 
@@ -306,7 +305,7 @@ Interactive documentation includes:
 * Metrics
 * Lineage
 
-📖 **dbt Documentation:** [Insert Documentation Link]
+📖 **dbt Documentation:** [(https://oj980.us1.dbt.com/api/ide/v3/70471823492852/legacy/files/docs/index.html#!/overview]
 
 ---
 
@@ -347,7 +346,6 @@ Interactive documentation includes:
 * Incremental Models
 * MetricFlow Query Serving
 * Cost Optimization Strategies
-* Advanced Customer Lifetime Value Models
 * Data Observability Tooling
 * Reverse ETL Activation
 
@@ -356,7 +354,7 @@ Interactive documentation includes:
 ## Additional Links
 
 * Version 1 Repository
-* Thought Process Documentation
+* Thought Process Documentation https://github.com/N3zzar/Dbt-cloud-Project-initialversion/blob/e414e541fcac662f36fe9f7b35bdd1445c9a6ba7/thoughtprocess.md
 
 ---
 
