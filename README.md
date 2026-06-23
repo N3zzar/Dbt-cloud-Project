@@ -102,6 +102,8 @@ By defining metrics once and exposing them through semantic models, all downstre
 
 ![Metrics Configuration](images/Metrics.png)
 
+![Lightdash Metrics](images/lightdashmetrics.png)
+
 ---
 
 ### Lightdash Dashboards
