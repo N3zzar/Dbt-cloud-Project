@@ -2,9 +2,9 @@
 
 **End-to-End Analytics Engineering with dbt, Semantic Modeling, Governed Metrics, and Lightdash**
 
-📚 **Version 1 Project:** [Link to V1 Repository](https://github.com/N3zzar/Dbt-cloud-Project-initialversion.git)]
+📚 **Version 1 Project:** [Link to V1 Repository](https://github.com/N3zzar/Dbt-cloud-Project-initialversion.git)
 
-📖 **Interactive dbt Documentation:** [Link to dbt Docs](https://oj980.us1.dbt.com/api/ide/v3/70471823492852/legacy/files/docs/index.html#!/overview)]
+📖 **Interactive dbt Documentation:** [Link to dbt Docs](https://oj980.us1.dbt.com/api/ide/v3/70471823492852/legacy/files/docs/index.html#!/overview)
 
 ---
 
