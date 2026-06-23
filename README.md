@@ -2,9 +2,9 @@
 
 **End-to-End Analytics Engineering with dbt, Semantic Modeling, Governed Metrics, and Lightdash**
 
-📚 **Version 1 Project:** [Link to V1 Repository](https://github.com/N3zzar/Dbt-cloud-Project-initialversion.git)
+📚 **Version 1 Project:** [V1 Repository](https://github.com/N3zzar/Dbt-cloud-Project-initialversion.git)
 
-📖 **Interactive dbt Documentation:** [Link to dbt Docs](https://oj980.us1.dbt.com/api/ide/v3/70471823492852/legacy/files/docs/index.html#!/overview)
+📖 **Interactive dbt Documentation:** [dbt Docs](https://dbt-olist.netlify.app/)
 
 ---
 
@@ -16,7 +16,7 @@ Version 1 focused on building a trusted dimensional warehouse using dbt and BigQ
 
 The goal of this release was to move beyond warehouse modeling and establish a complete analytics workflow—from raw data to governed metrics and stakeholder-ready insights.
 
-For implementation details that remain unchanged — including staging architecture, snapshots, macros, CI/CD, source freshness checks, and foundational dimensional modeling—please refer to the Version 1 documentation.
+For implementation details that remain unchanged — including staging architecture, snapshots, macros, CI/CD, source freshness checks, and foundational dimensional modeling—please refer to the [Version 1 documentation](https://github.com/N3zzar/Dbt-cloud-Project-initialversion.git).
 
 ---
 
@@ -309,7 +309,7 @@ Interactive documentation includes:
 * Metrics
 * Lineage
 
-📖 **dbt Documentation:** [(https://oj980.us1.dbt.com/api/ide/v3/70471823492852/legacy/files/docs/index.html#!/overview]
+📖 [**dbt Documentation**](https://dbt-olist.netlify.app/)
 
 ---
 
@@ -358,7 +358,7 @@ Interactive documentation includes:
 ## Additional Links
 
 * [Version 1 Repository](https://github.com/N3zzar/Dbt-cloud-Project-initialversion.git)
-* Thought Process Documentation https://github.com/N3zzar/Dbt-cloud-Project-initialversion/blob/e414e541fcac662f36fe9f7b35bdd1445c9a6ba7/thoughtprocess.md
+* [Thought Process Documentation](https://github.com/N3zzar/Dbt-cloud-Project-initialversion/blob/e414e541fcac662f36fe9f7b35bdd1445c9a6ba7/thoughtprocess.md)
 
 ---
 
