@@ -281,7 +281,7 @@ models:
 
           total_revenue:
             label: Total Revenue
-            type: sum
+            type: count
             sql: total_order_value
             format: '$#,##0.00'
             description: Revenue generated from delivered orders.
