@@ -18,3 +18,16 @@ exposures:
     owner:
       name: "Nezzar Knowles"
       email: "tomoyeted@gmail.com"
+
+  - name: Revenue Dashboard
+    type: dashboard
+    label: "Data contracts Demo"
+    url: 
+    maturity: Low
+    description: "This dashboard is to show the implication of not setting an agreed contracts between producer and consumer"
+    depends_on:
+      - ref('mart_sales')
+
+    owner:
+      name: "Light dash"
+      email: "ebenezertomoye01@gmail.com"
