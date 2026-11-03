@@ -111,7 +111,7 @@ select
     p.total_payment_records,
     p.total_payment_value,
 
-    coalesce(i.items_total_price + i.items_total_freight, 0) as total_order_value
+    coalesce(i.items_total_price + i.items_total_freight, 0) as order_value
 
 from {{ ref('stg__orders') }} o
 left join items i on o.order_id = i.order_id

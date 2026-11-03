@@ -50,7 +50,7 @@ with customer_orders as (
 
         count(distinct order_id) as frequency,
 
-        sum(total_order_value) as monetary
+        sum(order_value) as monetary
 
     from {{ ref('fct_orders') }}
 

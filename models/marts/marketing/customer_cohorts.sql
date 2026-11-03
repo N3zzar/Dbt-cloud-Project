@@ -99,7 +99,7 @@ select
         month
     ) as months_since_first_order,
 
-    o.total_order_value
+    o.order_value
 
 from customer_cohorts cc
 
@@ -117,7 +117,7 @@ select
 
     count(distinct co.customer_id) as customers,
 
-    sum(co.total_order_value) as revenue
+    sum(co.order_value) as revenue
 
 from customer_orders co
 

@@ -7,7 +7,6 @@ exposures:
     description: "Dashboard in Lightdash showing insights into customers, payments and sales."
     depends_on:
       - ref('mart_customer')
-      - ref('mart_sales')
       - ref('mart_product_performance')
       - ref('customer_cohorts')
       - ref('customer_rfm_scores')
@@ -19,15 +18,17 @@ exposures:
       name: "Nezzar Knowles"
       email: "tomoyeted@gmail.com"
 
-  - name: Revenue Dashboard
+
+  - name: revenue_dashboard
     type: dashboard
-    label: "Data contracts Demo"
-    url: 
-    maturity: Low
-    description: "This dashboard is to show the implication of not setting an agreed contracts between producer and consumer"
+    label: "Data Contracts Demo"
+    url: "REPLACE_WITH_ACTUAL_LIGHTDASH_DASHBOARD_URL"
+    maturity: low
+    description: >
+      Lightdash dashboard reporting total customers, total revenue, and
+      revenue per customer from mart_sales.
     depends_on:
       - ref('mart_sales')
-
     owner:
-      name: "Light dash"
+      name: "Lightdash"
       email: "ebenezertomoye01@gmail.com"

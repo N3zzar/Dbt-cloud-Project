@@ -40,7 +40,7 @@ with orders_agg as (
         date(max(order_purchase_timestamp)) as last_order_date,
         sum(total_items) as total_items_purchased,
         count(distinct order_id) as total_orders,
-        sum(total_order_value) as total_revenue
+        sum(order_value) as total_revenue
 
     from {{ ref("fct_orders") }}
 
