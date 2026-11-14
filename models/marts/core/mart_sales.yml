@@ -2,12 +2,15 @@ version: 2
 
 models:
   - name: mart_sales
+  
     description: >
       One row per delivered order, containing only the fields needed for
       the revenue dashboard: customer identity, order revenue, and purchase year.
+
     config:
       contract:
         enforced: true
+
       meta:
         owner: "data-analytics"
         domain: "sales"
